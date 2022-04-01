@@ -1,6 +1,6 @@
 <template>
   <div >
-    <el-table
+    <!-- <el-table
       :data="tableData"
       style="width: 50%">
       <el-table-column
@@ -18,8 +18,8 @@
         prop="castRate"
         label="地址">
       </el-table-column>
-    </el-table>
-    <table-scroll  :tableHeader="tableHeader" :tableData="tableData" :bodyHeight='300' style="width: 100%;height='250px'"></table-scroll>
+    </el-table> -->
+    <table-scroll  :tableHeader="tableHeader" :tableData="tableData" bodyHeight='300' ></table-scroll>
   </div>
 </template>
 
@@ -47,7 +47,7 @@ import TableScroll from '@/components/table/table.vue'
           interLockCount: '王小虎',
           castCount: '上海',
           removeCount: '普陀区',
-          castRate: '上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄',
+          castRate: '上海市普陀区金沙江路 1518 弄',
           durationMinutesSum: 200333
         }, {
           id: '123333',
@@ -55,7 +55,7 @@ import TableScroll from '@/components/table/table.vue'
           interLockCount: '王小虎',
           castCount: '上海',
           removeCount: '普陀区',
-          castRate: '上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄 1518 弄',
+          castRate: '上海市普陀区金沙江路 1518 弄',
           durationMinutesSum: 200333
         }, {
           id: '123333',
@@ -97,13 +97,28 @@ import TableScroll from '@/components/table/table.vue'
           removeCount: '普陀区',
           castRate: '上海市普陀区金沙江路 1518 弄',
           durationMinutesSum: 200333
+        }, {
+          id: '123333',
+          parentPlantName: '2016-05-08',
+          interLockCount: '王小虎',
+          castCount: '上海',
+          removeCount: '普陀区',
+          castRate: '上海市普陀区金沙江路 1518 弄',
+          durationMinutesSum: 200333
+        }, {
+          id: '123333',
+          parentPlantName: '2016-05-09',
+          interLockCount: '王小虎',
+          castCount: '上海',
+          removeCount: '普陀区',
+          castRate: '上海市普陀区金沙江路 1518 弄',
+          durationMinutesSum: 200333
         }]
       }
     },
     methods: {
     },
     mounted() {
-      console.log(this, 'llll')
     }
   }
 </script>

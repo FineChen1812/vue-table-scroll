@@ -8,15 +8,15 @@
         >
       </table-header>
     </div>
-    <div class="el-table__body-wrapper" ref="bodyWrapper" :style="{height:`${bodyHeight}px`}">
-      <Scroll :key="componentKey" ref="scroll" :store="store" :data="tableData">
+    <div class="el-table__body-wrapper" ref="bodyWrapper" :style="`height: ${bodyHeight}px;`">
+      <!-- <Scroll :key="componentKey" ref="scroll" :store="store" :data="tableData"> -->
         <table-body
           ref="tableBody"
           @lineClick = "lineClick"
           :store="store"
-          :style="{width: layout.bodyWidth ? layout.bodyWidth + 'px' : ''}">
+          :style="{ width: layout.bodyWidth ? layout.bodyWidth + 'px' : ''}">
         </table-body>
-      </Scroll>
+      <!-- </Scroll> -->
     </div>
   </div>
 </template>
@@ -49,7 +49,7 @@
       },
 
       bodyHeight: {
-        type: Number,
+        type: [Number,String],
         default: 300
       },
 
@@ -141,7 +141,6 @@
     destroyed() {
       this.unbindEvents();
     },
-
     data() {
       this.store = createStore(this)
       const layout = new TableLayout({
@@ -153,9 +152,17 @@
       });
       return {
         layout,
+        // styleObj: {
+        //   overflowY: 'auto',
+        //   height: `${this.bodyHeight}px`
+        // },
         componentKey: 0,
         isHidden: false,
       };
     }
   };
 </script>
+
+<style scoped>
+
+</style>

@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import scrollbarWidth from '@/utils/scrollbar-width';
+
 
 class TableLayout {
   constructor(options) {
@@ -29,6 +29,7 @@ class TableLayout {
   updateColumnsWidth() {
     const bodyWidth = this.table.$el.clientWidth;
     this.bodyWidth = bodyWidth
+    // this.bodyWidth = 1000
   }
 
 }

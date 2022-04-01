@@ -72,7 +72,8 @@ export default {
       return {
         transform: `translate(${this.xPos}px,${this.yPos}px)`,
         transition: `all ${this.ease} ${this.delay}ms`,
-        overflow: 'hidden'
+        // overflow: 'hidden'
+        width: '100%'
       }
     },
     defaultOption () {
