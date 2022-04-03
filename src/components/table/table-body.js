@@ -16,6 +16,7 @@ export default {
     const tableData = this.tableData
     const isIndex = this.tableLayout.index
     const height = this.realBoxHeight / 2
+    const table = this.table
     const pos = this.pos
     const enter = () => {
       if (this.hoverStopSwitch) this.stopMove()
@@ -24,7 +25,7 @@ export default {
       if (this.hoverStopSwitch) this.startMove()
     }
     const lineClick = (data) => {
-      this.$emit('lineClick', data)
+      table.$emit('lineClick', data)
     }
     const upScroll = () => {
       if (this.yPos > 0) this.yPos = -height
@@ -50,10 +51,10 @@ export default {
             border="0">
             <colgroup>
             {
-              isIndex && <col name={ `el-table_1_column_0` }  width="50" />
+              isIndex && <col name={ `column_0` }  width="50" />
             }
             {
-              tableHeader.map((column,index) => !column.hidden &&<col name={ `el-table_1_column_${index+1}` }  key={index} />)
+              tableHeader.map((column,index) => !column.hidden &&<col name={ `column_${index+1}` } />)
             }
             </colgroup>
             <tbody>
@@ -61,14 +62,14 @@ export default {
                 tableData.map((bodyColumn, bodyIndex) => {
                   return (
                     <tr onClick={() => lineClick(bodyColumn)}>
-                      {  isIndex && <td class={['el-table__cell']}>
+                      {  isIndex && <td class={['el-table__cell', 'is-center']}>
                           <div class={ ['cell'] }>{bodyIndex+1}</div>
                         </td>
                       }
                       {
                         tableHeader.map((headerColumn, headerIndex) => {
                           return (
-                            !headerColumn.hidden&& <td class={['el-table__cell']}
+                            !headerColumn.hidden&& <td class={['el-table__cell', 'is-center']}
                               on-mouseenter={($event) => this.handleCellMouseEnter($event)}
                               on-mouseleave={this.handleCellMouseLeave}
                             >
@@ -99,43 +100,34 @@ export default {
     pos () {
       return {
         transform: `translateY(${this.yPos}px)`,
-        transition: `all ${this.ease} ${this.delay}ms`,
+        transition: `all ease-in 0`,
         overflow: 'hidden'
       }
     },
     defaultOption () {
       return {
-        step: 0.1, //步长
-        singleStep: 6,
+        step: 0.5, //步长
+        singleStep: 6, //单步滚动步长
         hoverStop: true, //是否启用鼠标hover控制
         singleHeight: 48, //单条数据高度有值hoverStop关闭
-        singleWaitTime: 1000, //单步停止等待时间
-        singleStepMove: true,
-        autoPlay: true,
+        singleStepMove: true, //开启单步滚动
         delayTime: 2000, //刚开始延迟滚动时间
-        switchDelay: 400,
-        waitTime: 2000
+        waitTime: 2000 //单步滚动间隔时间
       }
     },
     options () {
       return Object.assign({}, this.defaultOption, this.classOption)
     },
-    autoPlay () {
-      return this.options.autoPlay
-    },
     hoverStopSwitch () {
-      return this.options.hoverStop && this.autoPlay
-    },
-    baseFontSize () {
-      return this.options.isSingleRemUnit ? parseInt(window.getComputedStyle(document.documentElement, null).fontSize) : 1
+      return this.options.hoverStop
     },
     realSingleStopHeight () {
-      return this.options.singleHeight * this.baseFontSize
+      return this.options.singleHeight
     },
     singleStep () {
       let step = this.options.singleStep
       if (this.realSingleStopHeight % singleStep !== 0  ) {
-        console.warn('当前单步长布置单条数据高度的约数,请及时调整,避免造成滚动错位*&……%&')
+        console.warn('当前单步长不是单条数据高度的约数,请及时调整,避免造成滚动错位*&……%&')
       }
       return step
     }
@@ -151,8 +143,6 @@ export default {
       tableData: this.store.tableData,
       arrowStyle: '',
       yPos: 0,
-      delay: 0,
-      copyHtml: '',
       cellHeight: 0,
       parentHeight: 0,
       realBoxHeight: 0, // 内容实际宽度
@@ -164,7 +154,6 @@ export default {
     this.singleWaitTime = null // single 单步滚动的定时器
     this.isHover = false // mouseenter mouseleave 控制this._move()的开关
     this.isStart = false // 外部定义高度高于表格高度开始滚动
-    this.ease = 'ease-in'
   },
 
   methods: {
@@ -234,7 +223,6 @@ export default {
         this.VM.$el.style.display  = 'none'
       }
     },
-
     reset () {
       this.cancle()
       this.initMove()
@@ -242,34 +230,19 @@ export default {
     cancle () {
       cancelAnimationFrame(this.reqFrame || '')
     },
-
-
     move () {
-     // 鼠标移入时拦截_move()
       if (this.isHover) return
-      this.cancle() //进入move立即先清除动画 防止频繁touchMove导致多动画同时进行
+      this.cancle()
       this.reqFrame = requestAnimationFrame(
-        function () {
+        () => {
           const h = this.realBoxHeight / 2  
-          let { waitTime, singleStepMove } = this.options
-          let { step } = this
+          let { step } = this.options
           if (Math.abs(this.yPos) >= h) {
             this.yPos = 0
           }
           this.yPos -= step
-          if (this.singleWaitTime) clearTimeout(this.singleWaitTime)
-            if (!!this.realSingleStopHeight) { //是否启动了单行暂停配置
-              if (Math.abs(this.yPos) % this.realSingleStopHeight < step) { // 符合条件暂停waitTime
-                this.singleWaitTime = setTimeout(() => {
-                  this.move()
-                }, waitTime)
-              } else {
-                this.move()
-              }
-            } else {
-            this.move()
-          }
-        }.bind(this)
+          this.move()
+        }
       )
     },
 
@@ -297,17 +270,7 @@ export default {
     },
     initMove () {
       this.$nextTick(() => {
-        const { switchDelay, autoPlay } = this.options
         this.dataWarm(this.data)
-
-        if (autoPlay) {
-          this.ease = 'ease-in'
-          this.delay = 0
-        } else {
-          this.ease = 'linear'
-          this.delay = switchDelay
-          return
-        }
         // 是否可以滚动判断
         if (this.isStart) {
           let timer = setTimeout(() => {
@@ -348,6 +311,5 @@ export default {
         clearTimeout(timer)
       }, this.options.delayTime)
     }
-  }
-  
+  } 
 };

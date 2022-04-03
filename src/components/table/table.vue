@@ -9,14 +9,11 @@
       </table-header>
     </div>
     <div class="el-table__body-wrapper" ref="bodyWrapper" :style="`height: ${bodyHeight}px;`">
-      <!-- <Scroll :key="componentKey" ref="scroll" :store="store" :data="tableData"> -->
-        <table-body
-          ref="tableBody"
-          @lineClick = "lineClick"
-          :store="store"
-          :style="{ width: layout.bodyWidth ? layout.bodyWidth + 'px' : ''}">
-        </table-body>
-      <!-- </Scroll> -->
+      <table-body
+        ref="tableBody"
+        :store="store"
+        :style="{ width: layout.bodyWidth ? layout.bodyWidth + 'px' : ''}">
+      </table-body>
     </div>
   </div>
 </template>
@@ -28,9 +25,6 @@
   import TableLayout from './layout/table-layout';
   import TableBody from './table-body';
   import TableHeader from './table-header';
-  import Scroll from '../scroll/index'
-
-  let tableId = 1;
 
   export default {
     name: 'TableScroll',
@@ -67,17 +61,9 @@
     components: {
       TableHeader,
       TableBody,
-      Scroll
     },
 
     methods: {
-      forceRerender() {
-        // 更改key可以让组件强制更新
-        this.componentKey += 1;  
-      },
-      lineClick(data){
-        console.log(this.store, 'ddd')
-      },
 
       bindEvents() {
         addResizeListener(this.$el, this.resizeListener);
@@ -93,7 +79,6 @@
       },
 
       doLayout() {
-        this.forceRerender()
         this.layout.updateColumnsWidth();
       },
     },
@@ -122,22 +107,16 @@
           this.store.setData('tableData',value)
         }
       },
-
     },
-
-
     created() {
-      // this.tableId = 'el-table_' + tableIdSeed++;
       this.debouncedUpdateLayout = debounce(50, () => this.doLayout());
     },
-
     mounted() {
       this.bindEvents();
       this.doLayout();
       this.store.updateColumns(this.layout.bodyWidth);
       this.$ready = true;
     },
-
     destroyed() {
       this.unbindEvents();
     },
@@ -152,17 +131,8 @@
       });
       return {
         layout,
-        // styleObj: {
-        //   overflowY: 'auto',
-        //   height: `${this.bodyHeight}px`
-        // },
-        componentKey: 0,
         isHidden: false,
       };
     }
   };
 </script>
-
-<style scoped>
-
-</style>

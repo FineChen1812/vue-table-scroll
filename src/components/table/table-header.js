@@ -1,4 +1,3 @@
-// import { mapStates } from './store/helper';
 import LayoutObserver from './layout/observer';
 
 export default {
@@ -14,17 +13,16 @@ export default {
         cellpadding="0"
         border="0">
         <colgroup>
-          {isIndex&&<col name={ `el-table_1_column_0` }  width="50" />}
+          {isIndex&&<col name={ `column_0` }  width="50" />}
           {
-            tableHeader.map((column,index) => !column.hidden && <col name={ `el-table_1_column_${index+1}` } align="center" key={index} />)
+            tableHeader.map((column,index) => !column.hidden && <col name={ `column_${index+1}` }  />)
           }
-          
         </colgroup>
-        <thead class={ ['is-group'] }>
+        <thead class={ ['is-group']}>
           {
             <tr>
               {
-                isIndex && <th class={['el-table__cell']}>序号</th>
+                isIndex && <th class={['el-table__cell', 'is-center']}>序号</th>
               }
               {
                 tableHeader.map((column, cellIndex) => (
@@ -32,10 +30,9 @@ export default {
                   colspan={ column.colSpan }
                   rowspan={ column.rowSpan }
                   key={ column.id }
-                  class={ this.getHeaderCellClass() }
+                  class={ ['el-table__cell', 'is-center'] }
                   >
-                    
-                  <div class={ ['cell', column.filteredValue && column.filteredValue.length > 0 ? 'highlight' : '', column.labelClassName] }>
+                  <div class={ ['cell'] }>
                     {
                       column.label
                     }
@@ -58,33 +55,8 @@ export default {
   computed: {
     table() {
       return this.$parent;
-    },
-
-    hasGutter() {
-      return true
-    },
+    }
 
   },
-  created() {
-  },
-  methods: {
-    
 
-    getHeaderCellClass(rowIndex, columnIndex, row, column) {
-      const classes = [];
-
-      classes.push('el-table__cell');
-
-      return classes.join(' ');
-    },
-    
-  },
-
-  data() {
-    return {
-      draggingColumn: null,
-      dragging: false,
-      dragState: {}
-    };
-  }
 }

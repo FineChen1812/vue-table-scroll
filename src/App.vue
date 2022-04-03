@@ -9,6 +9,7 @@
         width="180">
       </el-table-column>
       <el-table-column
+      align="center"
         prop="interLockCount"
         label="姓名"
         width="180">
@@ -19,7 +20,7 @@
         label="地址">
       </el-table-column>
     </el-table> -->
-    <table-scroll  :tableHeader="tableHeader" :tableData="tableData" bodyHeight='300' ></table-scroll>
+    <table-scroll  :tableHeader="tableHeader" @lineClick = 'lineClick'  :tableData="tableData" bodyHeight='300' ></table-scroll>
   </div>
 </template>
 
@@ -117,6 +118,9 @@ import TableScroll from '@/components/table/table.vue'
       }
     },
     methods: {
+      lineClick(data){
+        console.log(data, '222')
+      }
     },
     mounted() {
     }

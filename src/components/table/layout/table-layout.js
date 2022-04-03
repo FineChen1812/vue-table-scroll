@@ -1,5 +1,3 @@
-import Vue from 'vue';
-
 
 class TableLayout {
   constructor(options) {
@@ -23,15 +21,10 @@ class TableLayout {
       throw new Error('store is required for Table Layout');
     }
   }
-
-
-
   updateColumnsWidth() {
     const bodyWidth = this.table.$el.clientWidth;
     this.bodyWidth = bodyWidth
-    // this.bodyWidth = 1000
   }
-
 }
 
 export default TableLayout;
