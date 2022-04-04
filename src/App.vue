@@ -1,8 +1,10 @@
 <template>
   <div >
-    <!-- <el-table
+    <div style="display: flex;width:100%;">
+      <div style="flex:1;"></div>
+      <el-table
       :data="tableData"
-      style="width: 50%">
+      style="width: 50%;flex:1;">
       <el-table-column
         prop="parentPlantName"
         label="日期"
@@ -19,8 +21,17 @@
         prop="castRate"
         label="地址">
       </el-table-column>
-    </el-table> -->
-    <table-scroll  :tableHeader="tableHeader" @lineClick = 'lineClick'  :tableData="tableData" bodyHeight='300' ></table-scroll>
+      </el-table>
+    </div>
+    
+    <div style="display: flex;width:100%;">
+      <div style="flex:1;"></div>
+      <div style="flex:1;">
+      <table-scroll  :tableHeader="tableHeader" @lineClick = 'lineClick'  :tableData="tableData" bodyHeight='300' ></table-scroll>
+
+      </div>
+    </div>
+    
   </div>
 </template>
 
@@ -48,7 +59,7 @@ import TableScroll from '@/components/table/table.vue'
           interLockCount: '王小虎',
           castCount: '上海',
           removeCount: '普陀区',
-          castRate: '上海市普陀区金沙江路 1518 弄',
+          castRate: '上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄',
           durationMinutesSum: 200333
         }, {
           id: '123333',

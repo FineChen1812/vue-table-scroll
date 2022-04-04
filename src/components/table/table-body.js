@@ -9,7 +9,14 @@ export default {
     store: {
       required: true
     },
+    classOption: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }
   },
+  
 
   render(h) {
     const tableHeader = this.store.tableHeader
@@ -109,7 +116,7 @@ export default {
         step: 0.5, //步长
         singleStep: 6, //单步滚动步长
         hoverStop: true, //是否启用鼠标hover控制
-        singleHeight: 48, //单条数据高度有值hoverStop关闭
+        singleHeight: 48, //单条数据高度
         singleStepMove: true, //开启单步滚动
         delayTime: 2000, //刚开始延迟滚动时间
         waitTime: 2000 //单步滚动间隔时间
@@ -121,19 +128,14 @@ export default {
     hoverStopSwitch () {
       return this.options.hoverStop
     },
-    realSingleStopHeight () {
-      return this.options.singleHeight
-    },
     singleStep () {
       let step = this.options.singleStep
-      if (this.realSingleStopHeight % singleStep !== 0  ) {
+      let singleHeight = this.options.singleHeight
+      if ( singleHeight % singleStep !== 0  ) {
         console.warn('当前单步长不是单条数据高度的约数,请及时调整,避免造成滚动错位*&……%&')
       }
       return step
     }
-  },
-
-  watch: {
   },
 
   data() {
@@ -143,17 +145,33 @@ export default {
       tableData: this.store.tableData,
       arrowStyle: '',
       yPos: 0,
-      cellHeight: 0,
-      parentHeight: 0,
       realBoxHeight: 0, // 内容实际宽度
     };
   },
   beforeCreate() {
-    this.popperVM = null 
+    this.VM = null 
     this.reqFrame = null // move动画的animationFrame定时器
     this.singleWaitTime = null // single 单步滚动的定时器
     this.isHover = false // mouseenter mouseleave 控制this._move()的开关
     this.isStart = false // 外部定义高度高于表格高度开始滚动
+  },
+
+  mounted(){
+    const height = this.$parent.layout.height
+    const cellHeight =  this.$el.offsetHeight
+    if (cellHeight > height) {
+      this.tableData.push(...this.tableData)
+      this.isStart = true
+      let timer = setTimeout(() => {
+        this.initMove()
+        clearTimeout(timer)
+      }, this.options.delayTime)
+    }
+  },
+  beforeDestroy () {
+    this.cancle()
+    this.VM && this.VM.$destroy()
+    if(this.singleWaitTime)clearTimeout(this.singleWaitTime)
   },
 
   methods: {
@@ -166,11 +184,11 @@ export default {
       const rangeWidth = range.getBoundingClientRect().width;
       if (rangeWidth > cellChild.offsetWidth) {
         if(!this.VM) this.createTooltip()
-        let offsetTop = this.getOffsetTop(event)
-        let {offsetLeft, arrowOffsetLeft } = this.getOffsetLeft(event,rangeWidth)
+        let offsetTop = this.getOffsetTop(range,event)
+        const {offsetLeft, arrowOffsetLeft } = this.getOffsetLeft(range,event,rangeWidth)
         this.VM.$el.style.display  = ''
         this.tooltipContent = cell.innerText || cell.textContent;
-        this.tipStyle = `z-index: 9999;position:absolute; left: ${offsetLeft}px; top: ${event.y}px;`
+        this.tipStyle = `z-index: 9999;position:fixed; left: ${offsetLeft}px; top: ${offsetTop}px;`
         this.arrowStyle = `left: ${arrowOffsetLeft}px`
       }
     },
@@ -191,31 +209,19 @@ export default {
       document.getElementsByTagName('body')[0].appendChild(this.VM.$el)
     },
 
-    getOffsetTop(event) {
-      let headerOffsetTop
-      const getParentNode = node => {
-        if (node.$el._prevClass === 'el-table') {
-          headerOffsetTop = node.$refs.tableHeader.$el.clientHeight
-          return node.$el.offsetTop
-        }
-        return getParentNode(node.$parent)
-      }
-      let parentOffsetTop = getParentNode(this)
-      return parentOffsetTop + event.target.offsetTop + headerOffsetTop + event.target.clientHeight
+    getOffsetTop(range,event) {
+      const rangeTop = range.getBoundingClientRect().top
+      // TODO 待优化 目前默认35
+      const skewing = 35
+      return rangeTop + skewing
     },
 
-    getOffsetLeft(event, rangeWidth){
-      let removeWidth = parseInt((rangeWidth - event.target.clientWidth)/2)
-      const getParentNode = node => {
-        if (node.$el._prevClass === 'el-table') {
-          return node.$el.offsetLeft
-        }
-        return getParentNode(node.$parent)
-      }
-      let parentOffsetLeft = getParentNode(this)
-      let leftWidth = parentOffsetLeft + event.target.offsetLeft - removeWidth
-      let offsetLeft = leftWidth < 0 ? 0 : leftWidth
-      let arrowOffsetLeft = leftWidth < 0 ? event.target.offsetLeft + event.target.clientWidth/2 : rangeWidth/2
+    getOffsetLeft(range,event, rangeWidth){
+      const rangeLeft = range.getBoundingClientRect().left
+      const removeWidth = parseInt((rangeWidth - event.target.clientWidth)/2)
+      const leftWidth = rangeLeft - removeWidth
+      const offsetLeft = leftWidth < 0 ? 0 : leftWidth
+      const arrowOffsetLeft = leftWidth < 0 ? rangeLeft + event.target.clientWidth/2 : rangeWidth/2
       return {offsetLeft, arrowOffsetLeft }
     },
     handleCellMouseLeave(event) {
@@ -252,13 +258,13 @@ export default {
       this.reqFrame = requestAnimationFrame(
         () => {
           const h = this.realBoxHeight / 2  
-          let { waitTime, singleStep } = this.options
+          let { waitTime, singleStep,singleHeight } = this.options
           if (Math.abs(this.yPos) >= h) {
             this.yPos = 0
           }
           this.yPos -= singleStep
           if (this.singleWaitTime) clearTimeout(this.singleWaitTime)
-          if (Math.abs(this.yPos) % this.realSingleStopHeight < singleStep) {
+          if (Math.abs(this.yPos) % singleHeight < singleStep) {
             this.singleWaitTime = setTimeout(() => {
               this.singleMove()
             }, waitTime)
@@ -270,7 +276,6 @@ export default {
     },
     initMove () {
       this.$nextTick(() => {
-        this.dataWarm(this.data)
         // 是否可以滚动判断
         if (this.isStart) {
           let timer = setTimeout(() => {
@@ -284,11 +289,6 @@ export default {
         }
       })
     },
-    dataWarm (data) {
-      // if (data.length > 100) {
-      //   console.warn(`数据达到了${data.length}条有点多哦~,可能会造成部分老旧浏览器卡顿。`);
-      // }
-    },
     startMove () {
       this.isHover = false 
       this.isStart?this.options.singleStepMove?this.singleMove() :this.move():null
@@ -299,17 +299,6 @@ export default {
       if (this.singleWaitTime) clearTimeout(this.singleWaitTime)
       this.cancle()
     },
-  },
-  mounted(){
-    const height = this.parentHeight = this.$parent.layout.height
-    const cellHeight =  this.$el.offsetHeight
-    if (cellHeight > height) {
-      this.tableData.push(...this.tableData)
-      this.isStart = true
-      let timer = setTimeout(() => {
-        this.initMove()
-        clearTimeout(timer)
-      }, this.options.delayTime)
-    }
-  } 
-};
+  }
+  
+}
