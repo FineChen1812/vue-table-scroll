@@ -11,7 +11,7 @@ export default class Store {
   }
   updateColumns(bodyWidth) {
     let tables = this.tableHeader.filter(item => !item.hidden)
-    let indexWidth = this.table.layout.index ? 50 : 0
+    let indexWidth = this.table.mergeOption.index ? 50 : 0
     let widthSum = 0, num = 0
     for(let i = 0; i < tables.length; i++) {
       if(tables[i].width) {

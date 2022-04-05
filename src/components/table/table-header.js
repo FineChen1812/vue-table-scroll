@@ -5,7 +5,7 @@ export default {
   mixins: [LayoutObserver],
   render(h) {
     const tableHeader = this.store.tableHeader
-    const isIndex = this.tableLayout.index
+    const isIndex = this.table.mergeOption.index
     return (
       <table
         class="el-table_header"

@@ -17,20 +17,19 @@
         width="180">
       </el-table-column>
       <el-table-column
-      show-overflow-tooltip
         prop="castRate"
         label="地址">
       </el-table-column>
       </el-table>
     </div>
     
-    <div style="display: flex;width:100%;">
+    <!-- <div style="display: flex;width:100%;">
       <div style="flex:1;"></div>
-      <div style="flex:1;">
-      <table-scroll  :tableHeader="tableHeader" @lineClick = 'lineClick'  :tableData="tableData" bodyHeight='300' ></table-scroll>
+      <div style="flex:1;"> -->
+      <table-scroll  :tableHeader="tableHeader" @lineClick = 'lineClick'  :tableData="tableData" :options="options" ></table-scroll>
 
-      </div>
-    </div>
+      <!-- </div>
+    </div> -->
     
   </div>
 </template>
@@ -125,7 +124,10 @@ import TableScroll from '@/components/table/table.vue'
           removeCount: '普陀区',
           castRate: '上海市普陀区金沙江路 1518 弄',
           durationMinutesSum: 200333
-        }]
+        }],
+        options: {
+          bodyHeight: 500
+        }
       }
     },
     methods: {

@@ -4,15 +4,15 @@
       <table-header
         ref="tableHeader"
         :store="store"
-        :style="{ width: layout.bodyWidth ? layout.bodyWidth + 'px' : ''}"
+        :style="{ width: parentWidth ? parentWidth + 'px' : ''}"
         >
       </table-header>
     </div>
-    <div class="el-table__body-wrapper" ref="bodyWrapper" :style="`height: ${bodyHeight}px;`">
+    <div class="el-table__body-wrapper" ref="bodyWrapper" :style="`height: ${mergeOption.bodyHeight}px;`">
       <table-body
         ref="tableBody"
         :store="store"
-        :style="{ width: layout.bodyWidth ? layout.bodyWidth + 'px' : ''}">
+        :style="{ width: parentWidth ? parentWidth + 'px' : ''}">
       </table-body>
     </div>
   </div>
@@ -22,7 +22,6 @@
   import {createStore} from './store/index'
   import { debounce} from 'throttle-debounce';
   import { addResizeListener, removeResizeListener } from '@/utils/resize-event';
-  import TableLayout from './layout/table-layout';
   import TableBody from './table-body';
   import TableHeader from './table-header';
 
@@ -42,19 +41,11 @@
         }
       },
 
-      bodyHeight: {
-        type: [Number,String],
-        default: 300
-      },
-
-      index: {
-        type: Boolean,
-        default: false
-      },
-
-      showTip: {
-        type: Boolean,
-        default: true
+      options: {
+        type: Object,
+        default: function() {
+          return {}
+        }
       },
     },
 
@@ -75,21 +66,30 @@
 
       resizeListener() {
         if (!this.$ready) return;
-        this.doLayout();
+        this.updateColumnsWidth();
       },
-
-      doLayout() {
-        this.layout.updateColumnsWidth();
-      },
+      updateColumnsWidth() {
+        this.bodyWidth = this.$el.clientWidth;
+      }
     },
 
     computed: {
+      defaultOptions(){
+        return {
+          bodyHeight: 300,
+          index: false,
+          showTip: true
+        }
+      },
+      mergeOption(){
+        return Object.assign({}, this.defaultOptions, this.options)
+      },
 
       bodyWrapper() {
         return this.$refs.headerWrapper;
       },
-      bodyWidth() {
-        const { bodyWidth } = this.layout;
+      parentWidth() {
+        const bodyWidth = this.bodyWidth;
         this.store.updateColumns(bodyWidth)
         return bodyWidth
       },
@@ -113,25 +113,20 @@
     },
     mounted() {
       this.bindEvents();
-      this.doLayout();
-      this.store.updateColumns(this.layout.bodyWidth);
+      this.updateColumnsWidth();
+      this.store.updateColumns(this.bodyWidth);
       this.$ready = true;
     },
     destroyed() {
       this.unbindEvents();
     },
     data() {
-      this.store = createStore(this)
-      const layout = new TableLayout({
-        height: this.bodyHeight,
-        store: this.store,
-        table: this,
-        fit: this.fit,
-        index: this.index
-      });
+      const store = createStore(this)
+      const table = this
       return {
-        layout,
-        isHidden: false,
+        store,
+        table,
+        bodyWidth: '',
       };
     }
   };

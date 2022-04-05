@@ -9,20 +9,14 @@ export default {
     store: {
       required: true
     },
-    classOption: {
-      type: Object,
-      default: () => {
-        return {}
-      }
-    }
   },
   
-
   render(h) {
     const tableHeader = this.store.tableHeader
     const tableData = this.tableData
-    const isIndex = this.tableLayout.index
     const height = this.realBoxHeight / 2
+    const {isIndex, showTip} = this.table.mergeOption
+    const  bodyWidth = this.table.bodyWidth
     const table = this.table
     const pos = this.pos
     const enter = () => {
@@ -54,7 +48,7 @@ export default {
             class="el-table__body"
             cellspacing="0"
             cellpadding="0"
-            style={`width:${this.tableLayout.bodyWidth}px`}
+            style={`width:${bodyWidth}px`}
             border="0">
             <colgroup>
             {
@@ -80,7 +74,7 @@ export default {
                               on-mouseenter={($event) => this.handleCellMouseEnter($event)}
                               on-mouseleave={this.handleCellMouseLeave}
                             >
-                              <div class={ ['cell', 'el-tooltip'] }>
+                              <div class={showTip? ['cell', 'el-tooltip']:['cell'] }>
                               {
                                 bodyColumn[headerColumn.prop]
                               }
@@ -97,7 +91,7 @@ export default {
           </table>
         </div>
       </div>
-    );
+    )
   },
 
   computed: {
@@ -123,7 +117,7 @@ export default {
       }
     },
     options () {
-      return Object.assign({}, this.defaultOption, this.classOption)
+      return Object.assign({}, this.defaultOption, this.tableLayout.options)
     },
     hoverStopSwitch () {
       return this.options.hoverStop
@@ -146,7 +140,7 @@ export default {
       arrowStyle: '',
       yPos: 0,
       realBoxHeight: 0, // 内容实际宽度
-    };
+    }
   },
   beforeCreate() {
     this.VM = null 
@@ -157,7 +151,7 @@ export default {
   },
 
   mounted(){
-    const height = this.$parent.layout.height
+    const height = this.$parent.mergeOption.bodyHeight
     const cellHeight =  this.$el.offsetHeight
     if (cellHeight > height) {
       this.tableData.push(...this.tableData)
@@ -176,6 +170,7 @@ export default {
 
   methods: {
     handleCellMouseEnter(event) {
+      if (!this.table.mergeOption.showTip) return
       const cell = event.target;
       const cellChild = cell.querySelector('.cell');
       const range = document.createRange();
@@ -275,6 +270,7 @@ export default {
       )
     },
     initMove () {
+      console.log(this.options, 'options')
       this.$nextTick(() => {
         // 是否可以滚动判断
         if (this.isStart) {

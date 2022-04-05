@@ -1,12 +1,12 @@
 export default {
   computed: {
     tableLayout() {
-      let layout = this.layout;
-      if (!layout && this.table) {
-        layout =  this.table.layout || this.table.$parent.layout;
+      let layout
+      if (this.table) {
+        layout =  this.table || this.table.$parent
       }
       if (!layout) {
-        throw new Error('Can not find table layout.');
+        throw new Error('Can not find table');
       }
       return layout;
     }
@@ -25,7 +25,7 @@ export default {
       for (let i = layout.index ? 1 : 0, j = cols.length; i < j; i++) {
         const col = cols[i];
         const name = col.getAttribute('name');
-        // h5虽已废弃，但是主流浏览器目前还支持 https://caniuse.com/?search=col%20width
+        // col width属性h5虽已废弃，但是主流浏览器目前还支持 https://caniuse.com/?search=col%20width
         if (name) {
           col.setAttribute('width', column[i]?.width);
         }
