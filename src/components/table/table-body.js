@@ -107,11 +107,11 @@ export default {
     },
     defaultOption () {
       return {
-        step: 0.5, //步长
+        step: 2, //步长
         singleStep: 6, //单步滚动步长
         hoverStop: true, //是否启用鼠标hover控制
         singleHeight: 48, //单条数据高度
-        singleStepMove: true, //开启单步滚动
+        singleStepMove: false, //开启单步滚动
         delayTime: 2000, //刚开始延迟滚动时间
         waitTime: 2000 //单步滚动间隔时间
       }

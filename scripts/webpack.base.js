@@ -27,17 +27,12 @@ module.exports = {
               esModule: false
             }
           },
-          // 'sass-loader'
         ]
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2)(\?\S*)?$/,
         loader: 'file-loader'
       } 
-      // {
-      //   test: /\.scss$/,
-      //   use: ['sass-loader','style-loader','css-loader']
-      // }
     ]
   },
   devServer: {

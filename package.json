@@ -13,7 +13,6 @@
     "@babel/preset-env": "^7.16.11",
     "babel-loader": "^8.2.3",
     "babel-plugin-component": "^1.1.1",
-    "comutils": "^1.1.19",
     "css-loader": "^6.7.1",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
@@ -30,7 +29,10 @@
   "dependencies": {
     "@vue/babel-helper-vue-jsx-merge-props": "^1.2.1",
     "@vue/babel-preset-jsx": "^1.2.4",
-    "normalize-wheel": "^1.0.1",
+    "eslint": "^8.12.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.7",
+    "prettier": "^2.6.2",
     "resize-observer-polyfill": "^1.5.1",
     "style-loader": "^3.3.1",
     "throttle-debounce": "^3.0.1"

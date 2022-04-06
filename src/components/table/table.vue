@@ -76,7 +76,7 @@
     computed: {
       defaultOptions(){
         return {
-          bodyHeight: 300,
+          bodyHeight: 500,
           index: false,
           showTip: true
         }

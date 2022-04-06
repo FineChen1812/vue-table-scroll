@@ -56,7 +56,5 @@ export default {
     table() {
       return this.$parent;
     }
-
   },
-
 }

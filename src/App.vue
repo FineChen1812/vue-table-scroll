@@ -1,28 +1,5 @@
 <template>
   <div >
-    <div style="display: flex;width:100%;">
-      <div style="flex:1;"></div>
-      <el-table
-      :data="tableData"
-      style="width: 50%;flex:1;">
-      <el-table-column
-        prop="parentPlantName"
-        label="日期"
-        width="180">
-      </el-table-column>
-      <el-table-column
-      align="center"
-        prop="interLockCount"
-        label="姓名"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="castRate"
-        label="地址">
-      </el-table-column>
-      </el-table>
-    </div>
-    
     <!-- <div style="display: flex;width:100%;">
       <div style="flex:1;"></div>
       <div style="flex:1;"> -->
@@ -58,7 +35,7 @@ import TableScroll from '@/components/table/table.vue'
           interLockCount: '王小虎',
           castCount: '上海',
           removeCount: '普陀区',
-          castRate: '上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄',
+          castRate: '上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄',
           durationMinutesSum: 200333
         }, {
           id: '123333',
@@ -126,7 +103,7 @@ import TableScroll from '@/components/table/table.vue'
           durationMinutesSum: 200333
         }],
         options: {
-          bodyHeight: 500
+          bodyHeight: 300
         }
       }
     },
