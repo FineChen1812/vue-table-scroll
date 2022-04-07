@@ -4,18 +4,30 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "serve": "webpack serve --config scripts/webpack.dev.js"
+    "serve": "webpack serve --config scripts/webpack.dev.js",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,vue}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
   },
   "author": "NexusFeng",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.17.5",
     "@babel/preset-env": "^7.16.11",
+    "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.3",
     "babel-plugin-component": "^1.1.1",
     "css-loader": "^6.7.1",
+    "eslint": "^8.12.0",
+    "eslint-plugin-vue": "^8.6.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
+    "husky": "^7.0.0",
+    "lint-staged": "^12.3.7",
     "node-sass": "^7.0.1",
     "sass-loader": "^12.6.0",
     "vue": "^2.6.14",
@@ -29,9 +41,6 @@
   "dependencies": {
     "@vue/babel-helper-vue-jsx-merge-props": "^1.2.1",
     "@vue/babel-preset-jsx": "^1.2.4",
-    "eslint": "^8.12.0",
-    "husky": "^7.0.4",
-    "lint-staged": "^12.3.7",
     "prettier": "^2.6.2",
     "resize-observer-polyfill": "^1.5.1",
     "style-loader": "^3.3.1",
