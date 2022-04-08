@@ -7,7 +7,6 @@ export const getCell = function (event) {
     }
     cell = cell.parentNode
   }
-
   return null
 }
 
