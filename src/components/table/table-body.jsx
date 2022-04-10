@@ -159,7 +159,7 @@ export default {
     this.VM = null
     this.reqFrame = null // move动画的animationFrame定时器
     this.singleWaitTime = null // single 单步滚动的定时器
-    this.isHover = false // mouseenter mouseleave 控制this._move()的开关
+    this.isHover = false // mouseenter mouseleave 控制进入悬停的开关
     this.isStart = false // 外部定义高度高于表格高度开始滚动
   },
 
@@ -289,7 +289,6 @@ export default {
       })
     },
     initMove() {
-      console.log(this.options, 'options')
       this.$nextTick(() => {
         // 是否可以滚动判断
         if (this.isStart) {

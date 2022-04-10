@@ -13,7 +13,8 @@ module.exports = {
     "ecmaVersion": 2020,
     "sourceType": "module",
     "ecmaFeatures": {
-      "jsx": false
+      "jsx": true
     },
   },
+  requireConfigFile: false
 }
