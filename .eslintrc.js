@@ -5,9 +5,8 @@ module.exports = {
     node: true,
     es6: true,
   },
-  plugins: ['vue','jsx'],
+  plugins: ['vue','jsx', "transform-vue-jsx"],
   extends: ["plugin:vue/essential",'eslint:recommended','prettier'],
-  parser: 'vue-eslint-parser',
   parserOptions: {
     "parser": "@babel/eslint-parser",
     "ecmaVersion": 2020,
@@ -15,6 +14,6 @@ module.exports = {
     "ecmaFeatures": {
       "jsx": true
     },
+    requireConfigFile: false
   },
-  requireConfigFile: false
 }
