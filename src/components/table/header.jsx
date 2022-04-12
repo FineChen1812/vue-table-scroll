@@ -1,15 +1,27 @@
-import LayoutObserver from './layout/observer'
+import LayoutObserver from './layout/observer';
 
 export default {
-  name: 'tableHeader',
+  name: 'TableHeader',
   mixins: [LayoutObserver],
-  render(h) {
-    const tableHeader = this.store.tableHeader
-    const isIndex = this.table.mergeOption.index
+
+  props: {
+    store: {
+      required: true
+    }
+  },
+
+  computed: {
+    table() {
+      return this.$parent;
+    }
+  },
+  render() {
+    const tableHeader = this.store.tableHeader;
+    const isIndex = this.table.mergeOption.index;
     return (
       <table class="el-table_header" cellspacing="0" cellpadding="0" border="0">
         <colgroup>
-          {isIndex && <col name={`column_0`} width="50" />}
+          {isIndex && <col name={'column_0'} width="50" />}
           {tableHeader.map(
             (column, index) =>
               !column.hidden && <col name={`column_${index + 1}`} />
@@ -20,7 +32,7 @@ export default {
             <tr>
               {isIndex && <th class={['el-table__cell', 'is-center']}>序号</th>}
               {tableHeader.map(
-                (column, cellIndex) =>
+                column =>
                   !column.hidden && (
                     <th
                       colspan={column.colSpan}
@@ -36,18 +48,6 @@ export default {
           }
         </thead>
       </table>
-    )
-  },
-
-  props: {
-    store: {
-      required: true
-    }
-  },
-
-  computed: {
-    table() {
-      return this.$parent
-    }
+    );
   }
-}
+};

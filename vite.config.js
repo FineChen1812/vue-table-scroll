@@ -1,5 +1,6 @@
 import { createVuePlugin } from 'vite-plugin-vue2'
 const { resolve } =  require('path')
+import fs from 'fs/promises';
 
 export default {
   test: {
@@ -11,7 +12,7 @@ export default {
   },
   plugins: [
     createVuePlugin({
-      jsx: true,
+      jsx: true
     })
   ],
   resolve: {

@@ -1,5 +1,5 @@
 import { enableAutoDestroy, mount } from '@vue/test-utils'
-import { afterAll,  describe, expect, it } from 'vitest'
+import { afterAll,  describe, expect, it, vi } from 'vitest'
 import TableScroll from '../src/components/table/table.vue'
 import { tableData, tableHeader, tableColumnData, tableColumnHeader } from './mock/mock'
 
@@ -63,15 +63,11 @@ describe('event', () => {
 
 })
 
-describe('options attributes', () => {
+describe('options prop', () => {
   const wrapper = mount(TableScroll, {
     propsData: {
       tableData: tableColumnData,
       tableHeader: tableColumnHeader,
-      options: {
-        height: 500,
-        showTip: true
-      }
     }
   })
 
@@ -81,9 +77,32 @@ describe('options attributes', () => {
     expect(headerWidth).toEqual(tableColumnHeader[0].width)
   })
 
-  it('body height', () => {
+  it('body height', async () => {
+    await wrapper.setProps({options: {bodyHeight: 600}}) 
     const body = wrapper.vm.$el.querySelector('.el-table__body-wrapper')
-    expect(body.style.height).toEqual('500px')
+    expect(body.style.height).toEqual('600px')
+  })
+
+  it('show tooltip when overflow', async() => {
+    await wrapper.setProps({options: {showTip: true}})
+    expect(wrapper.vm.$el.querySelectorAll('.el-tooltip')).toHaveLength(54)
+    await wrapper.setProps({options: {showTip: false}})
+    expect(wrapper.vm.$el.querySelectorAll('.el-tooltip')).toHaveLength(0)
+  })
+
+  it('index', async() => {
+    await wrapper.setProps({options: {isIndex: true}})
+    expect(toArray(wrapper.vm.$el.querySelectorAll('.el-table__body-wrapper tbody tr td:first-child'))
+      .map(node => node.textContent)).toEqual(['1', '2', '3', '4', '5', '6', '7', '8', '9'])
+  })
+
+  it('singleStepMove', async(done) => {
+    // await wrapper.setProps({options: {singleStepMove: false}})
+    const target = wrapper.vm.$el.querySelector('.realBox')
+    setTimeout(() => {
+      console.log(wrapper.vm.$el.querySelector('.realBox').style)
+      done()
+    }, 3000)
   })
 
 })
