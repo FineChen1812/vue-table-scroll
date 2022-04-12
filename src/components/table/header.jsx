@@ -1,10 +1,11 @@
-import LayoutObserver from './layout/observer';
+import LayoutObserver from './layout/observer'
 
 export default {
   name: 'TableHeader',
   mixins: [LayoutObserver],
 
   props: {
+    // eslint-disable-next-line vue/require-prop-types
     store: {
       required: true
     }
@@ -12,12 +13,12 @@ export default {
 
   computed: {
     table() {
-      return this.$parent;
+      return this.$parent
     }
   },
   render() {
-    const tableHeader = this.store.tableHeader;
-    const isIndex = this.table.mergeOption.index;
+    const tableHeader = this.store.tableHeader
+    const isIndex = this.table.mergeOption.index
     return (
       <table class="el-table_header" cellspacing="0" cellpadding="0" border="0">
         <colgroup>
@@ -48,6 +49,6 @@ export default {
           }
         </thead>
       </table>
-    );
+    )
   }
-};
+}

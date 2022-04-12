@@ -1,6 +1,5 @@
-import { createVuePlugin } from 'vite-plugin-vue2'
-const { resolve } =  require('path')
-import fs from 'fs/promises';
+import { createVuePlugin } from 'vite-plugin-vue2';
+const { resolve } =  require('path');
 
 export default {
   test: {
@@ -8,7 +7,7 @@ export default {
     environment: 'jsdom',
     coverage: {
       reporter: ['text', 'json', 'html']
-    },
+    }
   },
   plugins: [
     createVuePlugin({
@@ -20,4 +19,4 @@ export default {
       {find: '@', replacement: resolve(__dirname, 'src')}
     ]
   }
-}
+};
