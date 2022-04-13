@@ -1,6 +1,6 @@
 import { enableAutoDestroy, mount } from '@vue/test-utils'
 import { afterAll,  afterEach,  describe, expect, it, vi } from 'vitest'
-import TableScroll from '../src/components/table/table.vue'
+import TableScroll from '@/components/table/table.vue'
 import { tableData, tableHeader, tableColumnData, tableColumnHeader } from './mock/mock'
 
 const toArray = (obj) => {

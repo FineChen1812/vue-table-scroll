@@ -21,7 +21,7 @@ export default {
   },
   server: {
     host: '127.0.0.1',
-    open: './index.html'
+    open: true
   },
   build: {
     rollupOptions: {

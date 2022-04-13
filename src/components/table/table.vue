@@ -105,10 +105,13 @@ export default {
       }
     },
     tableData: {
-      // immediate: true,
+      immediate: true,
       handler(value) {
-        this.store.setData('tableData', value)
-        this.module = 'TableBody'
+        console.log(value, 'val')
+        if (value?.length > 0) {
+          this.store.setData('tableData', value)
+          this.module = 'TableBody'
+        }
       }
     }
   },
