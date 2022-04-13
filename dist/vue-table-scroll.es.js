@@ -29,7 +29,7 @@ class Store {
     }
     this.tableHeader = tables.map((item) => {
       if (!item.width) {
-        item.width = parseInt((bodyWidth - widthSum - indexWidth) / (tables.length - num), 10);
+        item.width = parseWidth((bodyWidth - widthSum - indexWidth) / (tables.length - num));
       }
       return item;
     });
@@ -762,7 +762,7 @@ var TableBody = {
     },
     getOffsetLeft(range, event, rangeWidth) {
       const rangeLeft = range.getBoundingClientRect().left;
-      const removeWidth = parseInt((rangeWidth - event.target.clientWidth) / 2, 10);
+      const removeWidth = parseWidth((rangeWidth - event.target.clientWidth) / 2);
       const leftWidth = rangeLeft - removeWidth;
       const offsetLeft = leftWidth < 0 ? 0 : leftWidth;
       const arrowOffsetLeft = leftWidth < 0 ? rangeLeft + event.target.clientWidth / 2 : rangeWidth / 2;
