@@ -1,5 +1,5 @@
 import { enableAutoDestroy, mount } from '@vue/test-utils'
-import { afterAll,  describe, expect, it, vi } from 'vitest'
+import { afterAll,  afterEach,  describe, expect, it, vi } from 'vitest'
 import TableScroll from '../src/components/table/table.vue'
 import { tableData, tableHeader, tableColumnData, tableColumnHeader } from './mock/mock'
 
@@ -96,13 +96,19 @@ describe('options prop', () => {
       .map(node => node.textContent)).toEqual(['1', '2', '3', '4', '5', '6', '7', '8', '9'])
   })
 
-  it('singleStepMove', async(done) => {
-    // await wrapper.setProps({options: {singleStepMove: false}})
-    const target = wrapper.vm.$el.querySelector('.realBox')
-    setTimeout(() => {
-      console.log(wrapper.vm.$el.querySelector('.realBox').style)
-      done()
-    }, 3000)
+  // jsdom环境下并不会真正渲染元素 所以获取不到offsetHeight
+  it('create tooltip', async() => {
+    const tipVm = document.body.querySelector('.el-tooltip__popper')
+    expect(tipVm).toBeFalsy()
+    await wrapper.vm.$refs.tableBody.createTooltip()
+    const tip = document.body.querySelector('.el-tooltip__popper')
+    expect(tip).toBeTruthy()
+  })
+
+  it('mouse hover', () => {
+    expect(wrapper.vm.$refs.tableBody.isHover).toBeFalsy()
+    wrapper.find('.realBox').trigger('mouseenter')
+		expect(wrapper.vm.$refs.tableBody.isHover).toBeTruthy()
   })
 
 })

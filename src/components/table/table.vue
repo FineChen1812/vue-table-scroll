@@ -1,9 +1,6 @@
 <template>
   <div class="el-table">
-    <div
-      ref="headerWrapper"
-      class="el-table__header-wrapper"
-    >
+    <div ref="headerWrapper" class="el-table__header-wrapper">
       <table-header
         ref="tableHeader"
         :store="store"
@@ -25,11 +22,12 @@
 </template>
 
 <script>
-import { createStore } from './store/index';
-import { debounce } from 'throttle-debounce';
-import { addResizeListener, removeResizeListener } from './utils/resize-event';
-import TableBody from './body';
-import TableHeader from './header';
+import { createStore } from './store/index'
+import { debounce } from 'throttle-debounce'
+import { addResizeListener, removeResizeListener } from './utils/resize-event'
+import TableBody from './body'
+import TableHeader from './header'
+import '@/style/element-style/theme-chalk/index.css'
 
 export default {
   name: 'TableScroll',
@@ -41,32 +39,32 @@ export default {
   props: {
     tableHeader: {
       type: Array,
-      default: function() {
-        return [];
+      default: function () {
+        return []
       }
     },
     tableData: {
       type: Array,
-      default: function() {
-        return [];
+      default: function () {
+        return []
       }
     },
 
     options: {
       type: Object,
-      default: function() {
-        return {};
+      default: function () {
+        return {}
       }
     }
   },
   data() {
-    const store = createStore(this);
-    const table = this;
+    const store = createStore(this)
+    const table = this
     return {
       store,
       table,
       bodyWidth: ''
-    };
+    }
   },
 
   computed: {
@@ -75,64 +73,64 @@ export default {
         bodyHeight: 300,
         index: false,
         showTip: true
-      };
+      }
     },
     mergeOption() {
-      return Object.assign({}, this.defaultOptions, this.options);
+      return Object.assign({}, this.defaultOptions, this.options)
     },
 
     bodyWrapper() {
-      return this.$refs.headerWrapper;
+      return this.$refs.headerWrapper
     },
     parentWidth() {
-      const bodyWidth = this.bodyWidth;
-      this.store.updateColumns(bodyWidth);
-      return bodyWidth;
+      const bodyWidth = this.bodyWidth
+      this.store.updateColumns(bodyWidth)
+      return bodyWidth
     }
   },
   watch: {
     tableHeader: {
       immediate: true,
       handler(value) {
-        this.store.setData('tableHeader', value);
+        this.store.setData('tableHeader', value)
       }
     },
     tableData: {
       immediate: true,
       handler(value) {
-        this.store.setData('tableData', value);
+        this.store.setData('tableData', value)
       }
     }
   },
   created() {
-    this.debouncedUpdateLayout = debounce(50, () => this.doLayout());
+    this.debouncedUpdateLayout = debounce(50, () => this.doLayout())
   },
   mounted() {
-    this.bindEvents();
-    this.updateColumnsWidth();
-    this.store.updateColumns(this.bodyWidth);
-    this.$ready = true;
+    this.bindEvents()
+    this.updateColumnsWidth()
+    this.store.updateColumns(this.bodyWidth)
+    this.$ready = true
   },
   destroyed() {
-    this.unbindEvents();
+    this.unbindEvents()
   },
 
   methods: {
     bindEvents() {
-      addResizeListener(this.$el, this.resizeListener);
+      addResizeListener(this.$el, this.resizeListener)
     },
 
     unbindEvents() {
-      removeResizeListener(this.$el, this.resizeListener);
+      removeResizeListener(this.$el, this.resizeListener)
     },
 
     resizeListener() {
-      if (!this.$ready) return;
-      this.updateColumnsWidth();
+      if (!this.$ready) return
+      this.updateColumnsWidth()
     },
     updateColumnsWidth() {
-      this.bodyWidth = this.$el.clientWidth;
+      this.bodyWidth = this.$el.clientWidth
     }
   }
-};
+}
 </script>

@@ -10,12 +10,16 @@
 </template>
 
 <script>
-import TableScroll from './components/table/table.vue';
+import TableScroll from '@/components/table/index.js'
+import Vue from 'vue'
+
+Vue.use(TableScroll)
+
 export default {
   name: 'Example01Basic',
-  components: {
-    TableScroll
-  },
+  // components: {
+  //   TableScroll
+  // },
   data() {
     return {
       tableHeader: [
@@ -112,17 +116,17 @@ export default {
         }
       ],
       options: {
-        bodyHeight: 300
+        bodyHeight: 500
       }
-    };
+    }
   },
   mounted() {},
   methods: {
     lineClick(data) {
-      console.log(data, '222');
+      console.log(data, '222')
     }
   }
-};
+}
 </script>
 
 <style></style>

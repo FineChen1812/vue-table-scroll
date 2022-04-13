@@ -18,5 +18,19 @@ export default {
     alias: [
       {find: '@', replacement: resolve(__dirname, 'src')}
     ]
+  },
+  build: {
+    rollupOptions: {
+      external: ['vue'],
+      output: {
+        globals: {
+          vue: 'Vue',
+        }
+      }
+    },
+    lib: {
+      entry: 'src/components/table/index.js',
+      name: 'vue-table-scroll'
+    }
   }
 };

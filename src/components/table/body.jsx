@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import { debounce } from 'throttle-debounce'
 import LayoutObserver from './layout/observer'
+import { parseWidth } from './utils/util'
 
 export default {
   name: 'TableBody',
@@ -140,9 +141,8 @@ export default {
 
     getOffsetLeft(range, event, rangeWidth) {
       const rangeLeft = range.getBoundingClientRect().left
-      const removeWidth = parseInt(
-        (rangeWidth - event.target.clientWidth) / 2,
-        10
+      const removeWidth = parseWidth(
+        (rangeWidth - event.target.clientWidth) / 2
       )
       const leftWidth = rangeLeft - removeWidth
       const offsetLeft = leftWidth < 0 ? 0 : leftWidth
@@ -298,10 +298,10 @@ export default {
                         !headerColumn.hidden && (
                           <td
                             class={['el-table__cell', 'is-center']}
-                            on-mouseenter={$event =>
+                            vOn:mouseenter={$event =>
                               this.handleCellMouseEnter($event)
                             }
-                            on-mouseleave={this.handleCellMouseLeave}
+                            vOn:mouseleave={this.handleCellMouseLeave}
                           >
                             <div
                               class={
