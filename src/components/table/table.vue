@@ -12,11 +12,17 @@
       class="el-table__body-wrapper"
       :style="`height: ${mergeOption.bodyHeight}px;`"
     >
-      <table-body
+      <component
+        :is="module"
         ref="tableBody"
         :store="store"
         :style="{ width: parentWidth ? parentWidth + 'px' : '' }"
-      />
+      ></component>
+      <!-- <table-body
+        ref="tableBody"
+        :store="store"
+        :style="{ width: parentWidth ? parentWidth + 'px' : '' }"
+      /> -->
     </div>
   </div>
 </template>
@@ -27,6 +33,7 @@ import { debounce } from 'throttle-debounce'
 import { addResizeListener, removeResizeListener } from './utils/resize-event'
 import TableBody from './body'
 import TableHeader from './header'
+import ImgEmpty from '../empty/imgEmpty.vue'
 import '@/style/element-style/theme-chalk/index.css'
 
 export default {
@@ -34,7 +41,8 @@ export default {
 
   components: {
     TableHeader,
-    TableBody
+    TableBody,
+    ImgEmpty
   },
   props: {
     tableHeader: {
@@ -63,7 +71,8 @@ export default {
     return {
       store,
       table,
-      bodyWidth: ''
+      bodyWidth: '',
+      module: 'ImgEmpty'
     }
   },
 
@@ -96,9 +105,10 @@ export default {
       }
     },
     tableData: {
-      immediate: true,
+      // immediate: true,
       handler(value) {
         this.store.setData('tableData', value)
+        this.module = 'TableBody'
       }
     }
   },

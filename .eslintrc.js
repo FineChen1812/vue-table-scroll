@@ -5,7 +5,7 @@ module.exports = {
     'no-restricted-globals': ['error', 'event', 'fdescribe']
   },
   'parserOptions': {
-    'ecmaVersion': 6,
+    'ecmaVersion': 2020,
     'ecmaFeatures': {
       'jsx': true
     }

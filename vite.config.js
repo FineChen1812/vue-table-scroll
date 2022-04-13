@@ -19,6 +19,10 @@ export default {
       {find: '@', replacement: resolve(__dirname, 'src')}
     ]
   },
+  server: {
+    host: '127.0.0.1',
+    open: './index.html'
+  },
   build: {
     rollupOptions: {
       external: ['vue'],

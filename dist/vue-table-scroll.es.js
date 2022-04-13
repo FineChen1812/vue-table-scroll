@@ -988,14 +988,18 @@ var TableHeader = {
     }, [column.label])]))])])]);
   }
 };
-var index = "";
-var render = function() {
+var render$1 = function() {
+  var _vm = this;
+  var _h = _vm.$createElement;
+  _vm._self._c || _h;
+  return _vm._m(0);
+};
+var staticRenderFns$1 = [function() {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
-  return _c("div", { staticClass: "el-table" }, [_c("div", { ref: "headerWrapper", staticClass: "el-table__header-wrapper" }, [_c("table-header", { ref: "tableHeader", style: { width: _vm.parentWidth ? _vm.parentWidth + "px" : "" }, attrs: { "store": _vm.store } })], 1), _c("div", { ref: "bodyWrapper", staticClass: "el-table__body-wrapper", style: "height: " + _vm.mergeOption.bodyHeight + "px;" }, [_c("table-body", { ref: "tableBody", style: { width: _vm.parentWidth ? _vm.parentWidth + "px" : "" }, attrs: { "store": _vm.store } })], 1)]);
-};
-var staticRenderFns = [];
+  return _c("div", { staticClass: "empty", staticStyle: { "width": "100%", "text-align": "center" } }, [_c("img", { staticStyle: { "width": "150px", "margin-top": "20px" }, attrs: { "src": "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/PjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+PHN2ZyBjbGFzcz0iaWNvbiIgd2lkdGg9IjIwMHB4IiBoZWlnaHQ9IjIwMC4wMHB4IiB2aWV3Qm94PSIwIDAgMTAyNCAxMDI0IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEwMi40IDg5NmE0MDkuNiA1MS4yIDAgMSAwIDgxOS4yIDAgNDA5LjYgNTEuMiAwIDEgMC04MTkuMiAwWiIgZmlsbD0iIzRBNjhDQyIgb3BhY2l0eT0iLjEiIC8+PHBhdGggZD0iTTExNi43MzYgMzc2LjgzMmMwIDguNzA0IDYuNjU2IDE1LjM2IDE1LjM2IDE1LjM2czE1LjM2LTYuNjU2IDE1LjM2LTE1LjM2LTYuNjU2LTE1LjM2LTE1LjM2LTE1LjM2Yy04LjE5MiAwLTE1LjM2IDcuMTY4LTE1LjM2IDE1LjM2ek05MjYuNzIgODMyYy0xOS40NTYgNS4xMi0yMy41NTIgOS4yMTYtMjguMTYgMjguMTYtNS4xMi0xOS40NTYtOS4yMTYtMjMuNTUyLTI4LjE2LTI4LjE2IDE4Ljk0NC01LjEyIDIzLjU1Mi05LjIxNiAyOC4xNi0yOC4xNiA0LjYwOCAxOC45NDQgOC43MDQgMjMuNTUyIDI4LjE2IDI4LjE2ek0yMDIuMjQgMzIzLjA3MmMtMjUuMDg4IDYuNjU2LTMwLjIwOCAxMS43NzYtMzYuODY0IDM2Ljg2NC02LjY1Ni0yNS4wODgtMTEuNzc2LTMwLjIwOC0zNi44NjQtMzYuODY0IDI1LjA4OC02LjY1NiAzMC4yMDgtMTIuMjg4IDM2Ljg2NC0zNi44NjQgNi4xNDQgMjUuMDg4IDExLjc3NiAzMC4yMDggMzYuODY0IDM2Ljg2NHpNODE2LjY0IDIzNS4wMDhjLTE1LjM2IDQuMDk2LTE4LjQzMiA3LjE2OC0yMi41MjggMjIuNTI4LTQuMDk2LTE1LjM2LTcuMTY4LTE4LjQzMi0yMi41MjgtMjIuNTI4IDE1LjM2LTQuMDk2IDE4LjQzMi03LjE2OCAyMi41MjgtMjIuNTI4IDMuNTg0IDE1LjM2IDcuMTY4IDE4LjQzMiAyMi41MjggMjIuNTI4ek04ODIuNjg4IDE1Ni4xNmMtMzkuOTM2IDEwLjI0LTQ4LjEyOCAxOC45NDQtNTguODggNTguODgtMTAuMjQtMzkuOTM2LTE4Ljk0NC00OC4xMjgtNTguODgtNTguODggMzkuOTM2LTEwLjI0IDQ4LjEyOC0xOC45NDQgNTguODgtNTguODggMTAuMjQgMzkuNDI0IDE4Ljk0NCA0OC4xMjggNTguODggNTguODh6IiBmaWxsPSIjNEE2OENDIiBvcGFjaXR5PSIuNSIgLz48cGF0aCBkPSJNNDE5Ljg0IDcxMy4yMTZ2NC4wOTZsMzMuNzkyIDMxLjIzMiAxMjkuNTM2LTYyLjk3Nkw0NjUuOTIgNzYwLjgzMnYzNi44NjRsMTguOTQ0LTE4LjQzMnYtMC41MTIgMC41MTJsMTguOTQ0IDE4LjQzMiAxMDAuMzUyLTEyMi44OHYtNC4wOTZ6IiBmaWxsPSIjNEE2OENDIiBvcGFjaXR5PSIuMiIgLz48cGF0aCBkPSJNODYwLjE2IDU1MS45MzZ2LTEuMDI0YzAtMS4wMjQtMC41MTItMS41MzYtMC41MTItMi41NnYtMC41MTJsLTExMC4wOC0yODcuMjMyYy0xNS44NzItNDguNjQtNjAuOTI4LTgxLjQwOC0xMTIuMTI4LTgxLjQwOEgzODcuMDcyYy01MS4yIDAtOTYuMjU2IDMyLjc2OC0xMTIuMTI4IDgxLjQwOEwxNjQuODY0IDU0Ny44NHYwLjUxMmMtMC41MTIgMS4wMjQtMC41MTIgMS41MzYtMC41MTIgMi41NlY3NTcuNzZjMCA2NS4wMjQgNTIuNzM2IDExNy43NiAxMTcuNzYgMTE3Ljc2aDQ2MC44YzY1LjAyNCAwIDExNy43Ni01Mi43MzYgMTE3Ljc2LTExNy43NnYtMjA0LjhjLTAuNTEyLTAuNTEyLTAuNTEyLTAuNTEyLTAuNTEyLTEuMDI0ek0zMDMuNjE2IDI3MS4zNnMwLTAuNTEyIDAuNTEyLTAuNTEyQzMxNS4zOTIgMjMzLjk4NCAzNDkuMTg0IDIwOS45MiAzODcuMDcyIDIwOS45MmgyNDkuODU2YzM3Ljg4OCAwIDcxLjY4IDI0LjA2NCA4My40NTYgNjAuNDE2IDAgMCAwIDAuNTEyIDAuNTEyIDAuNTEybDEwMS44ODggMjY2LjI0SDU4OC44Yy04LjcwNCAwLTE1LjM2IDYuNjU2LTE1LjM2IDE1LjM2IDAgMzMuNzkyLTI3LjY0OCA2MS40NC02MS40NCA2MS40NHMtNjEuNDQtMjcuNjQ4LTYxLjQ0LTYxLjQ0YzAtOC43MDQtNi42NTYtMTUuMzYtMTUuMzYtMTUuMzZIMjAxLjcyOEwzMDMuNjE2IDI3MS4zNnpNODI5LjQ0IDc1Ny43NmMwIDQ4LjEyOC0zOC45MTIgODcuMDQtODcuMDQgODcuMDRIMjgxLjZjLTQ4LjEyOCAwLTg3LjA0LTM4LjkxMi04Ny4wNC04Ny4wNHYtMTg5LjQ0aDIyNi44MTZjNy4xNjggNDMuNTIgNDUuMDU2IDc2LjggOTAuNjI0IDc2LjhzODMuNDU2LTMzLjI4IDkwLjYyNC03Ni44SDgyOS40NHYxODkuNDR6IiBmaWxsPSIjNEE2OENDIiBvcGFjaXR5PSIuNSIgLz48cGF0aCBkPSJNNTEyIDU3OC41NmMtMTQuMzM2IDAtMjUuNi0xMS4yNjQtMjUuNi0yNS42VjUwMS43NkgyNTMuNDRsODMuOTY4LTIxOS4xMzYgMC41MTItMS4wMjRjNy4xNjgtMjEuNTA0IDI2LjYyNC0zNS44NCA0OS4xNTItMzUuODRoMjQ5Ljg1NmMyMi41MjggMCA0MS45ODQgMTQuMzM2IDQ5LjE1MiAzNS44NGwwLjUxMiAxLjAyNEw3NzAuNTYgNTAxLjc2SDUzNy42djUxLjJjMCAxNC4zMzYtMTEuMjY0IDI1LjYtMjUuNiAyNS42eiIgZmlsbD0iIzRBNjhDQyIgb3BhY2l0eT0iLjIiIC8+PC9zdmc+" } }), _c("p", [_vm._v("\u6682\u65E0\u6570\u636E")])]);
+}];
 function normalizeComponent(scriptExports, render2, staticRenderFns2, functionalTemplate, injectStyles, scopeId, moduleIdentifier, shadowMode) {
   var options = typeof scriptExports === "function" ? scriptExports.options : scriptExports;
   if (render2) {
@@ -1047,11 +1051,31 @@ function normalizeComponent(scriptExports, render2, staticRenderFns2, functional
     options
   };
 }
+const __vue2_script$1 = {};
+const __cssModules$1 = {};
+var __component__$1 = /* @__PURE__ */ normalizeComponent(__vue2_script$1, render$1, staticRenderFns$1, false, __vue2_injectStyles$1, null, null, null);
+function __vue2_injectStyles$1(context) {
+  for (let o in __cssModules$1) {
+    this[o] = __cssModules$1[o];
+  }
+}
+var ImgEmpty = /* @__PURE__ */ function() {
+  return __component__$1.exports;
+}();
+var index = "";
+var render = function() {
+  var _vm = this;
+  var _h = _vm.$createElement;
+  var _c = _vm._self._c || _h;
+  return _c("div", { staticClass: "el-table" }, [_c("div", { ref: "headerWrapper", staticClass: "el-table__header-wrapper" }, [_c("table-header", { ref: "tableHeader", style: { width: _vm.parentWidth ? _vm.parentWidth + "px" : "" }, attrs: { "store": _vm.store } })], 1), _c("div", { ref: "bodyWrapper", staticClass: "el-table__body-wrapper", style: "height: " + _vm.mergeOption.bodyHeight + "px;" }, [_c(_vm.module, { ref: "tableBody", tag: "component", style: { width: _vm.parentWidth ? _vm.parentWidth + "px" : "" }, attrs: { "store": _vm.store } })], 1)]);
+};
+var staticRenderFns = [];
 const __vue2_script = {
   name: "TableScroll",
   components: {
     TableHeader,
-    TableBody
+    TableBody,
+    ImgEmpty
   },
   props: {
     tableHeader: {
@@ -1079,7 +1103,8 @@ const __vue2_script = {
     return {
       store,
       table,
-      bodyWidth: ""
+      bodyWidth: "",
+      module: "ImgEmpty"
     };
   },
   computed: {
@@ -1110,9 +1135,9 @@ const __vue2_script = {
       }
     },
     tableData: {
-      immediate: true,
       handler(value) {
         this.store.setData("tableData", value);
+        this.module = "TableBody";
       }
     }
   },
