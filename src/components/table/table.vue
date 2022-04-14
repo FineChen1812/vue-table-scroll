@@ -107,7 +107,6 @@ export default {
     tableData: {
       immediate: true,
       handler(value) {
-        console.log(value, 'val')
         if (value?.length > 0) {
           this.store.setData('tableData', value)
           this.module = 'TableBody'

@@ -1137,7 +1137,6 @@ const __vue2_script = {
     tableData: {
       immediate: true,
       handler(value) {
-        console.log(value, "val");
         if ((value == null ? void 0 : value.length) > 0) {
           this.store.setData("tableData", value);
           this.module = "TableBody";
