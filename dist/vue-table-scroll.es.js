@@ -1,45 +1,4 @@
-import Vue$1 from "vue";
-function parseWidth(width) {
-  if (width) {
-    width = parseInt(width, 10);
-  } else {
-    width = 0;
-  }
-  return width;
-}
-class Store {
-  constructor() {
-    this.tableHeader = null;
-    this.tableData = null;
-    this.table = null;
-  }
-  setData(type, data) {
-    this[type] = data;
-  }
-  updateColumns(bodyWidth) {
-    let tables = this.tableHeader.filter((item) => !item.hidden);
-    let indexWidth = this.table.mergeOption.index ? 50 : 0;
-    let widthSum = 0;
-    let num = 0;
-    for (let i = 0; i < tables.length; i++) {
-      if (tables[i].width) {
-        widthSum += parseWidth(tables[i].width);
-        parseWidth(tables[i].width) && num++;
-      }
-    }
-    this.tableHeader = tables.map((item) => {
-      if (!item.width) {
-        item.width = parseWidth((bodyWidth - widthSum - indexWidth) / (tables.length - num));
-      }
-      return item;
-    });
-  }
-}
-function createStore(table) {
-  const store = new Store();
-  store.table = table;
-  return store;
-}
+import Vue from "vue";
 function throttle$1(delay, callback, options) {
   var _ref = options || {}, _ref$noTrailing = _ref.noTrailing, noTrailing = _ref$noTrailing === void 0 ? false : _ref$noTrailing, _ref$noLeading = _ref.noLeading, noLeading = _ref$noLeading === void 0 ? false : _ref$noLeading, _ref$debounceMode = _ref.debounceMode, debounceMode = _ref$debounceMode === void 0 ? void 0 : _ref$debounceMode;
   var timeoutID;
@@ -611,7 +570,6 @@ var LayoutObserver = {
     this.onColumnsChange(this.tableLayout);
   },
   updated() {
-    this.onColumnsChange(this.tableLayout);
   },
   methods: {
     onColumnsChange(layout) {
@@ -630,6 +588,14 @@ var LayoutObserver = {
     }
   }
 };
+function parseWidth(width) {
+  if (width) {
+    width = parseInt(width, 10);
+  } else {
+    width = 0;
+  }
+  return width;
+}
 var TableBody = {
   name: "TableBody",
   mixins: [LayoutObserver],
@@ -642,7 +608,7 @@ var TableBody = {
     return {
       tooltipContent: "",
       tipStyle: "",
-      tableData: this.store.tableData,
+      tableData: [],
       arrowStyle: "",
       yPos: 0,
       realBoxHeight: 0
@@ -685,6 +651,16 @@ var TableBody = {
       return step;
     }
   },
+  watch: {
+    "store.tableData": {
+      immediate: true,
+      handler(newVal, oldVal) {
+        if ((newVal == null ? void 0 : newVal.length) > 0 && oldVal !== newVal) {
+          this.tableData = newVal.slice(0);
+        }
+      }
+    }
+  },
   beforeCreate() {
     this.VM = null;
     this.reqFrame = null;
@@ -693,16 +669,7 @@ var TableBody = {
     this.isStart = false;
   },
   mounted() {
-    const height = this.$parent.mergeOption.bodyHeight;
-    const cellHeight = this.$el.offsetHeight;
-    if (cellHeight > height) {
-      this.tableData.push(...this.tableData);
-      this.isStart = true;
-      let timer = setTimeout(() => {
-        this.initMove();
-        clearTimeout(timer);
-      }, this.options.delayTime);
-    }
+    this.init();
   },
   beforeDestroy() {
     this.cancle();
@@ -711,6 +678,20 @@ var TableBody = {
       clearTimeout(this.singleWaitTime);
   },
   methods: {
+    init() {
+      const height = this.$parent.mergeOption.bodyHeight;
+      const cellHeight = this.$el.offsetHeight;
+      if (cellHeight > height) {
+        this.tableData.push(...this.store.tableData);
+        this.isStart = true;
+        let timer = setTimeout(() => {
+          this.initMove();
+          clearTimeout(timer);
+        }, this.options.delayTime);
+      } else {
+        this.isStart = false;
+      }
+    },
     handleCellMouseEnter(event) {
       if (!this.table.mergeOption.showTip)
         return;
@@ -737,7 +718,7 @@ var TableBody = {
     createTooltip() {
       this.$createElement;
       const that = this;
-      this.VM = new Vue$1({
+      this.VM = new Vue({
         render() {
           const h = arguments[0];
           return h("div", {
@@ -1067,7 +1048,7 @@ var render = function() {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
-  return _c("div", { staticClass: "el-table" }, [_c("div", { ref: "headerWrapper", staticClass: "el-table__header-wrapper" }, [_c("table-header", { ref: "tableHeader", style: { width: _vm.parentWidth ? _vm.parentWidth + "px" : "" }, attrs: { "store": _vm.store } })], 1), _c("div", { ref: "bodyWrapper", staticClass: "el-table__body-wrapper", style: "height: " + _vm.mergeOption.bodyHeight + "px;" }, [_c(_vm.module, { ref: "tableBody", tag: "component", style: { width: _vm.parentWidth ? _vm.parentWidth + "px" : "" }, attrs: { "store": _vm.store } })], 1)]);
+  return _c("div", { staticClass: "el-table" }, [_c("div", { ref: "headerWrapper", staticClass: "el-table__header-wrapper" }, [_c("table-header", { ref: "tableHeader", style: { width: _vm.parentWidth ? _vm.parentWidth + "px" : "" }, attrs: { "store": _vm.store } })], 1), _c("div", { ref: "bodyWrapper", staticClass: "el-table__body-wrapper", style: "height: " + _vm.mergeOption.bodyHeight + "px;" }, [_vm.isEmpty ? _c("img-empty") : _c("table-body", { key: _vm.updateKey, ref: "tableBody", style: { width: _vm.parentWidth ? _vm.parentWidth + "px" : "" }, attrs: { "store": _vm.store } })], 1)]);
 };
 var staticRenderFns = [];
 const __vue2_script = {
@@ -1098,13 +1079,17 @@ const __vue2_script = {
     }
   },
   data() {
-    const store = createStore(this);
-    const table = this;
     return {
-      store,
-      table,
+      store: {
+        tableHeader: [],
+        tableData: [],
+        table: this
+      },
+      updateKey: 0,
+      tableHeaderData: [],
+      tableBodyData: [],
       bodyWidth: "",
-      module: "ImgEmpty"
+      isEmpty: true
     };
   },
   computed: {
@@ -1123,7 +1108,7 @@ const __vue2_script = {
     },
     parentWidth() {
       const bodyWidth = this.bodyWidth;
-      this.store.updateColumns(bodyWidth);
+      this.updateColumns(bodyWidth);
       return bodyWidth;
     }
   },
@@ -1131,15 +1116,18 @@ const __vue2_script = {
     tableHeader: {
       immediate: true,
       handler(value) {
-        this.store.setData("tableHeader", value);
+        this.tableHeaderData = value;
       }
     },
     tableData: {
       immediate: true,
-      handler(value) {
-        if ((value == null ? void 0 : value.length) > 0) {
-          this.store.setData("tableData", value);
-          this.module = "TableBody";
+      handler(newVal, oldVal) {
+        if ((newVal == null ? void 0 : newVal.length) > 0 && oldVal !== newVal) {
+          this.isEmpty = false;
+          this.updateKey++;
+          this.tableBodyData = newVal;
+        } else {
+          this.isEmpty = true;
         }
       }
     }
@@ -1150,7 +1138,7 @@ const __vue2_script = {
   mounted() {
     this.bindEvents();
     this.updateColumnsWidth();
-    this.store.updateColumns(this.bodyWidth);
+    this.updateColumns(this.bodyWidth);
     this.$ready = true;
   },
   destroyed() {
@@ -1170,6 +1158,25 @@ const __vue2_script = {
     },
     updateColumnsWidth() {
       this.bodyWidth = this.$el.clientWidth;
+    },
+    updateColumns(bodyWidth) {
+      let tables = this.tableHeaderData.filter((item) => !item.hidden);
+      let indexWidth = this.mergeOption.index ? 50 : 0;
+      let widthSum = 0;
+      let num = 0;
+      for (let i = 0; i < tables.length; i++) {
+        if (tables[i].width) {
+          widthSum += parseWidth(tables[i].width);
+          parseWidth(tables[i].width) && num++;
+        }
+      }
+      this.store.tableHeader = tables.map((item) => {
+        if (!item.width) {
+          item.width = parseWidth((bodyWidth - widthSum - indexWidth) / (tables.length - num));
+        }
+        return item;
+      });
+      this.store.tableData = this.tableBodyData;
     }
   }
 };
@@ -1186,7 +1193,4 @@ var vueTableScroll = /* @__PURE__ */ function() {
 vueTableScroll.install = (Vue2, options = {}) => {
   Vue2.component(options.componentName || vueTableScroll.name, vueTableScroll);
 };
-if (typeof window !== "undefined" && window.Vue) {
-  Vue.component(vueTableScroll.name, vueTableScroll);
-}
 export { vueTableScroll as default };

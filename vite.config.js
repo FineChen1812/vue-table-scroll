@@ -1,11 +1,7 @@
-import { defineConfig, loadEnv } from 'vite';
 import { createVuePlugin } from 'vite-plugin-vue2';
 const { resolve } =  require('path');
 
-export default ({ mode}) => {
-  process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
-
-  return defineConfig ({
+export default  {
     test: {
       globals: true,
       environment: 'jsdom',
@@ -36,16 +32,12 @@ export default ({ mode}) => {
           }
         }
       },
-      outDir: process.env.VITE_APP_DIR,
-      minify: process.env.NODE_ENV === 'production'? 'terser' : "esbuild",
+      minify: 'terser',
       terserOptions: {
         compress: {
           drop_console: true,
           drop_debugger: true,
           pure_funcs: ['console.log']
-        },
-        output: {
-          comments: process.env.NODE_ENV !== 'production',
         },
       },
       lib: {
@@ -53,5 +45,4 @@ export default ({ mode}) => {
         name: 'vue-table-scroll'
       }
     }
-  })
 };

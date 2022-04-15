@@ -1,5 +1,5 @@
 import { enableAutoDestroy, mount } from '@vue/test-utils'
-import { afterAll,  afterEach,  describe, expect, it, vi } from 'vitest'
+import { afterAll,  describe, expect, it } from 'vitest'
 import TableScroll from '@/components/table/table.vue'
 import { tableData, tableHeader, tableColumnData, tableColumnHeader } from './mock/mock'
 

@@ -17,7 +17,7 @@ export default {
     return {
       tooltipContent: '',
       tipStyle: '',
-      tableData: this.store.tableData,
+      tableData: [],
       arrowStyle: '',
       yPos: 0,
       realBoxHeight: 0 // 内容实际宽度
@@ -63,6 +63,16 @@ export default {
       return step
     }
   },
+  watch: {
+    'store.tableData': {
+      immediate: true,
+      handler(newVal, oldVal) {
+        if (newVal?.length > 0 && oldVal !== newVal) {
+          this.tableData = newVal.slice(0)
+        }
+      }
+    }
+  },
   beforeCreate() {
     this.VM = null
     this.reqFrame = null // move动画的animationFrame定时器
@@ -72,16 +82,7 @@ export default {
   },
 
   mounted() {
-    const height = this.$parent.mergeOption.bodyHeight
-    const cellHeight = this.$el.offsetHeight
-    if (cellHeight > height) {
-      this.tableData.push(...this.tableData)
-      this.isStart = true
-      let timer = setTimeout(() => {
-        this.initMove()
-        clearTimeout(timer)
-      }, this.options.delayTime)
-    }
+    this.init()
   },
   beforeDestroy() {
     this.cancle()
@@ -90,6 +91,20 @@ export default {
   },
 
   methods: {
+    init() {
+      const height = this.$parent.mergeOption.bodyHeight
+      const cellHeight = this.$el.offsetHeight
+      if (cellHeight > height) {
+        this.tableData.push(...this.store.tableData)
+        this.isStart = true
+        let timer = setTimeout(() => {
+          this.initMove()
+          clearTimeout(timer)
+        }, this.options.delayTime)
+      } else {
+        this.isStart = false
+      }
+    },
     handleCellMouseEnter(event) {
       if (!this.table.mergeOption.showTip) return
       const cell = event.target

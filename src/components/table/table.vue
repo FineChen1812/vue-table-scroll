@@ -12,29 +12,26 @@
       class="el-table__body-wrapper"
       :style="`height: ${mergeOption.bodyHeight}px;`"
     >
-      <component
-        :is="module"
+      <img-empty v-if="isEmpty"></img-empty>
+      <table-body
+        v-else
         ref="tableBody"
+        :key="updateKey"
         :store="store"
         :style="{ width: parentWidth ? parentWidth + 'px' : '' }"
-      ></component>
-      <!-- <table-body
-        ref="tableBody"
-        :store="store"
-        :style="{ width: parentWidth ? parentWidth + 'px' : '' }"
-      /> -->
+      />
     </div>
   </div>
 </template>
 
 <script>
-import { createStore } from './store/index'
 import { debounce } from 'throttle-debounce'
 import { addResizeListener, removeResizeListener } from './utils/resize-event'
 import TableBody from './body'
 import TableHeader from './header'
 import ImgEmpty from '../empty/imgEmpty.vue'
 import '@/style/element-style/theme-chalk/index.css'
+import { parseWidth } from './utils/util'
 
 export default {
   name: 'TableScroll',
@@ -66,13 +63,17 @@ export default {
     }
   },
   data() {
-    const store = createStore(this)
-    const table = this
     return {
-      store,
-      table,
+      store: {
+        tableHeader: [],
+        tableData: [],
+        table: this
+      },
+      updateKey: 0,
+      tableHeaderData: [],
+      tableBodyData: [],
       bodyWidth: '',
-      module: 'ImgEmpty'
+      isEmpty: true
     }
   },
 
@@ -93,7 +94,7 @@ export default {
     },
     parentWidth() {
       const bodyWidth = this.bodyWidth
-      this.store.updateColumns(bodyWidth)
+      this.updateColumns(bodyWidth)
       return bodyWidth
     }
   },
@@ -101,15 +102,18 @@ export default {
     tableHeader: {
       immediate: true,
       handler(value) {
-        this.store.setData('tableHeader', value)
+        this.tableHeaderData = value
       }
     },
     tableData: {
       immediate: true,
-      handler(value) {
-        if (value?.length > 0) {
-          this.store.setData('tableData', value)
-          this.module = 'TableBody'
+      handler(newVal, oldVal) {
+        if (newVal?.length > 0 && oldVal !== newVal) {
+          this.isEmpty = false
+          this.updateKey++
+          this.tableBodyData = newVal
+        } else {
+          this.isEmpty = true
         }
       }
     }
@@ -120,7 +124,7 @@ export default {
   mounted() {
     this.bindEvents()
     this.updateColumnsWidth()
-    this.store.updateColumns(this.bodyWidth)
+    this.updateColumns(this.bodyWidth)
     this.$ready = true
   },
   destroyed() {
@@ -142,6 +146,27 @@ export default {
     },
     updateColumnsWidth() {
       this.bodyWidth = this.$el.clientWidth
+    },
+    updateColumns(bodyWidth) {
+      let tables = this.tableHeaderData.filter(item => !item.hidden)
+      let indexWidth = this.mergeOption.index ? 50 : 0
+      let widthSum = 0
+      let num = 0
+      for (let i = 0; i < tables.length; i++) {
+        if (tables[i].width) {
+          widthSum += parseWidth(tables[i].width)
+          parseWidth(tables[i].width) && num++
+        }
+      }
+      this.store.tableHeader = tables.map(item => {
+        if (!item.width) {
+          item.width = parseWidth(
+            (bodyWidth - widthSum - indexWidth) / (tables.length - num)
+          )
+        }
+        return item
+      })
+      this.store.tableData = this.tableBodyData
     }
   }
 }
