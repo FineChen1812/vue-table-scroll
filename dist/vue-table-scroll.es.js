@@ -1,58 +1,4 @@
-import Vue from "vue";
-function throttle$1(delay, callback, options) {
-  var _ref = options || {}, _ref$noTrailing = _ref.noTrailing, noTrailing = _ref$noTrailing === void 0 ? false : _ref$noTrailing, _ref$noLeading = _ref.noLeading, noLeading = _ref$noLeading === void 0 ? false : _ref$noLeading, _ref$debounceMode = _ref.debounceMode, debounceMode = _ref$debounceMode === void 0 ? void 0 : _ref$debounceMode;
-  var timeoutID;
-  var cancelled = false;
-  var lastExec = 0;
-  function clearExistingTimeout() {
-    if (timeoutID) {
-      clearTimeout(timeoutID);
-    }
-  }
-  function cancel() {
-    clearExistingTimeout();
-    cancelled = true;
-  }
-  function wrapper() {
-    for (var _len = arguments.length, arguments_ = new Array(_len), _key = 0; _key < _len; _key++) {
-      arguments_[_key] = arguments[_key];
-    }
-    var self2 = this;
-    var elapsed = Date.now() - lastExec;
-    if (cancelled) {
-      return;
-    }
-    function exec() {
-      lastExec = Date.now();
-      callback.apply(self2, arguments_);
-    }
-    function clear() {
-      timeoutID = void 0;
-    }
-    if (!noLeading && debounceMode && !timeoutID) {
-      exec();
-    }
-    clearExistingTimeout();
-    if (debounceMode === void 0 && elapsed > delay) {
-      if (noLeading) {
-        lastExec = Date.now();
-      } else {
-        exec();
-      }
-    } else if (noTrailing !== true) {
-      timeoutID = setTimeout(debounceMode ? clear : exec, debounceMode === void 0 ? delay - elapsed : delay);
-    }
-  }
-  wrapper.cancel = cancel;
-  return wrapper;
-}
-function debounce(delay, atBegin, callback) {
-  return callback === void 0 ? throttle$1(delay, atBegin, {
-    debounceMode: false
-  }) : throttle$1(delay, callback, {
-    debounceMode: atBegin !== false
-  });
-}
+import Vue$1 from "vue";
 var MapShim = function() {
   if (typeof Map !== "undefined") {
     return Map;
@@ -141,7 +87,7 @@ var requestAnimationFrame$1 = function() {
   };
 }();
 var trailingTimeout = 2;
-function throttle(callback, delay) {
+function throttle$1(callback, delay) {
   var leadingCall = false, trailingCall = false, lastCallTime = 0;
   function resolvePending() {
     if (leadingCall) {
@@ -181,7 +127,7 @@ var ResizeObserverController = function() {
     this.mutationsObserver_ = null;
     this.observers_ = [];
     this.onTransitionEnd_ = this.onTransitionEnd_.bind(this);
-    this.refresh = throttle(this.refresh.bind(this), REFRESH_DELAY);
+    this.refresh = throttle$1(this.refresh.bind(this), REFRESH_DELAY);
   }
   ResizeObserverController2.prototype.addObserver = function(observer) {
     if (!~this.observers_.indexOf(observer)) {
@@ -524,6 +470,60 @@ var index$1 = function() {
   }
   return ResizeObserver;
 }();
+function throttle(delay, callback, options) {
+  var _ref = options || {}, _ref$noTrailing = _ref.noTrailing, noTrailing = _ref$noTrailing === void 0 ? false : _ref$noTrailing, _ref$noLeading = _ref.noLeading, noLeading = _ref$noLeading === void 0 ? false : _ref$noLeading, _ref$debounceMode = _ref.debounceMode, debounceMode = _ref$debounceMode === void 0 ? void 0 : _ref$debounceMode;
+  var timeoutID;
+  var cancelled = false;
+  var lastExec = 0;
+  function clearExistingTimeout() {
+    if (timeoutID) {
+      clearTimeout(timeoutID);
+    }
+  }
+  function cancel() {
+    clearExistingTimeout();
+    cancelled = true;
+  }
+  function wrapper() {
+    for (var _len = arguments.length, arguments_ = new Array(_len), _key = 0; _key < _len; _key++) {
+      arguments_[_key] = arguments[_key];
+    }
+    var self2 = this;
+    var elapsed = Date.now() - lastExec;
+    if (cancelled) {
+      return;
+    }
+    function exec() {
+      lastExec = Date.now();
+      callback.apply(self2, arguments_);
+    }
+    function clear() {
+      timeoutID = void 0;
+    }
+    if (!noLeading && debounceMode && !timeoutID) {
+      exec();
+    }
+    clearExistingTimeout();
+    if (debounceMode === void 0 && elapsed > delay) {
+      if (noLeading) {
+        lastExec = Date.now();
+      } else {
+        exec();
+      }
+    } else if (noTrailing !== true) {
+      timeoutID = setTimeout(debounceMode ? clear : exec, debounceMode === void 0 ? delay - elapsed : delay);
+    }
+  }
+  wrapper.cancel = cancel;
+  return wrapper;
+}
+function debounce(delay, atBegin, callback) {
+  return callback === void 0 ? throttle(delay, atBegin, {
+    debounceMode: false
+  }) : throttle(delay, callback, {
+    debounceMode: atBegin !== false
+  });
+}
 const isServer = typeof window === "undefined";
 const resizeHandler = function(entries) {
   for (let entry of entries) {
@@ -570,6 +570,7 @@ var LayoutObserver = {
     this.onColumnsChange(this.tableLayout);
   },
   updated() {
+    this.onColumnsChange(this.tableLayout);
   },
   methods: {
     onColumnsChange(layout) {
@@ -578,7 +579,7 @@ var LayoutObserver = {
       const cols = this.$el.querySelectorAll("colgroup > col");
       if (!cols.length)
         return;
-      for (let i = layout.index ? 1 : 0, j = cols.length; i < j; i++) {
+      for (let i = layout.mergeOption.index ? 1 : 0, j = cols.length; i < j; i++) {
         const col = cols[i];
         const name = col.getAttribute("name");
         if (name) {
@@ -627,7 +628,7 @@ var TableBody = {
     },
     defaultOption() {
       return {
-        step: 2,
+        step: 1,
         singleStep: 6,
         hoverStop: true,
         singleHeight: 48,
@@ -718,7 +719,7 @@ var TableBody = {
     createTooltip() {
       this.$createElement;
       const that = this;
-      this.VM = new Vue({
+      this.VM = new Vue$1({
         render() {
           const h = arguments[0];
           return h("div", {
@@ -837,7 +838,7 @@ var TableBody = {
     const tableData = this.tableData;
     const height = this.realBoxHeight / 2;
     const {
-      isIndex,
+      index: index2,
       showTip
     } = this.table.mergeOption;
     const bodyWidth = this.table.bodyWidth;
@@ -888,21 +889,21 @@ var TableBody = {
         "border": "0"
       },
       "style": `width:${bodyWidth}px`
-    }, [h("colgroup", [isIndex && h("col", {
+    }, [h("colgroup", [index2 && h("col", {
       "attrs": {
         "name": "column_0",
         "width": "50"
       }
-    }), tableHeader.map((column, index2) => !column.hidden && h("col", {
+    }), tableHeader.map((column, index3) => !column.hidden && h("col", {
       "attrs": {
-        "name": `column_${index2 + 1}`
+        "name": `column_${index3 + 1}`
       }
     }))]), h("tbody", [tableData.map((bodyColumn, bodyIndex) => {
       return h("tr", {
         "on": {
           "click": () => lineClick(bodyColumn)
         }
-      }, [isIndex && h("td", {
+      }, [index2 && h("td", {
         "class": ["el-table__cell", "is-center"]
       }, [h("div", {
         "class": ["cell"]
@@ -1108,7 +1109,7 @@ const __vue2_script = {
     },
     parentWidth() {
       const bodyWidth = this.bodyWidth;
-      this.updateColumns(bodyWidth);
+      this.initData();
       return bodyWidth;
     }
   },
@@ -1132,9 +1133,6 @@ const __vue2_script = {
       }
     }
   },
-  created() {
-    this.debouncedUpdateLayout = debounce(50, () => this.doLayout());
-  },
   mounted() {
     this.bindEvents();
     this.updateColumnsWidth();
@@ -1145,6 +1143,10 @@ const __vue2_script = {
     this.unbindEvents();
   },
   methods: {
+    initData() {
+      this.store.tableData = this.tableBodyData;
+      this.store.tableHeader = this.tableHeaderData.filter((item) => !item.hidden);
+    },
     bindEvents() {
       addResizeListener(this.$el, this.resizeListener);
     },
@@ -1160,6 +1162,7 @@ const __vue2_script = {
       this.bodyWidth = this.$el.clientWidth;
     },
     updateColumns(bodyWidth) {
+      bodyWidth = bodyWidth || this.$el.clientWidth;
       let tables = this.tableHeaderData.filter((item) => !item.hidden);
       let indexWidth = this.mergeOption.index ? 50 : 0;
       let widthSum = 0;
@@ -1170,13 +1173,13 @@ const __vue2_script = {
           parseWidth(tables[i].width) && num++;
         }
       }
-      this.store.tableHeader = tables.map((item) => {
+      const width = parseWidth((bodyWidth - widthSum - indexWidth) / (tables.length - num));
+      const header = this.store.tableHeader = tables;
+      header.forEach((item, index2) => {
         if (!item.width) {
-          item.width = parseWidth((bodyWidth - widthSum - indexWidth) / (tables.length - num));
+          this.$set(header[index2], "width", width);
         }
-        return item;
       });
-      this.store.tableData = this.tableBodyData;
     }
   }
 };
@@ -1193,4 +1196,7 @@ var vueTableScroll = /* @__PURE__ */ function() {
 vueTableScroll.install = (Vue2, options = {}) => {
   Vue2.component(options.componentName || vueTableScroll.name, vueTableScroll);
 };
+if (typeof window !== "undefined" && window.Vue) {
+  Vue.component(vueTableScroll.name, vueTableScroll);
+}
 export { vueTableScroll as default };
