@@ -37,7 +37,7 @@ export default {
     },
     defaultOption() {
       return {
-        step: 2, // 步长
+        step: 1, // 步长
         singleStep: 6, // 单步滚动步长
         hoverStop: true, // 是否启用鼠标hover控制
         singleHeight: 48, // 单条数据高度
@@ -248,7 +248,7 @@ export default {
     const tableHeader = this.store.tableHeader
     const tableData = this.tableData
     const height = this.realBoxHeight / 2
-    const { isIndex, showTip } = this.table.mergeOption
+    const { index, showTip } = this.table.mergeOption
     const bodyWidth = this.table.bodyWidth
     const table = this.table
     const pos = this.pos
@@ -293,7 +293,7 @@ export default {
             border="0"
           >
             <colgroup>
-              {isIndex && <col name={'column_0'} width="50" />}
+              {index && <col name={'column_0'} width="50" />}
               {tableHeader.map(
                 (column, index) =>
                   !column.hidden && <col name={`column_${index + 1}`} />
@@ -303,7 +303,7 @@ export default {
               {tableData.map((bodyColumn, bodyIndex) => {
                 return (
                   <tr onClick={() => lineClick(bodyColumn)}>
-                    {isIndex && (
+                    {index && (
                       <td class={['el-table__cell', 'is-center']}>
                         <div class={['cell']}>{bodyIndex + 1}</div>
                       </td>

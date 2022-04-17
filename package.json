@@ -1,6 +1,6 @@
 {
   "name": "vue-table-scroll",
-  "version": "1.2.4",
+  "version": "1.2.6",
   "description": "A scrollable table for Vue.js",
   "main": "/dist/vue-table-scroll.umd.js",
   "module": "/dist/vue-table-scroll.es.js",

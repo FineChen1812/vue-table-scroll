@@ -25,7 +25,6 @@
 </template>
 
 <script>
-import { debounce } from 'throttle-debounce'
 import { addResizeListener, removeResizeListener } from './utils/resize-event'
 import TableBody from './body'
 import TableHeader from './header'
@@ -94,7 +93,8 @@ export default {
     },
     parentWidth() {
       const bodyWidth = this.bodyWidth
-      this.updateColumns(bodyWidth)
+      // this.updateColumns(bodyWidth)
+      this.initData()
       return bodyWidth
     }
   },
@@ -118,9 +118,6 @@ export default {
       }
     }
   },
-  created() {
-    this.debouncedUpdateLayout = debounce(50, () => this.doLayout())
-  },
   mounted() {
     this.bindEvents()
     this.updateColumnsWidth()
@@ -132,6 +129,10 @@ export default {
   },
 
   methods: {
+    initData() {
+      this.store.tableData = this.tableBodyData
+      this.store.tableHeader = this.tableHeaderData.filter(item => !item.hidden)
+    },
     bindEvents() {
       addResizeListener(this.$el, this.resizeListener)
     },
@@ -148,6 +149,7 @@ export default {
       this.bodyWidth = this.$el.clientWidth
     },
     updateColumns(bodyWidth) {
+      bodyWidth = bodyWidth || this.$el.clientWidth
       let tables = this.tableHeaderData.filter(item => !item.hidden)
       let indexWidth = this.mergeOption.index ? 50 : 0
       let widthSum = 0
@@ -158,15 +160,15 @@ export default {
           parseWidth(tables[i].width) && num++
         }
       }
-      this.store.tableHeader = tables.map(item => {
+      const width = parseWidth(
+        (bodyWidth - widthSum - indexWidth) / (tables.length - num)
+      )
+      const header = (this.store.tableHeader = tables)
+      header.forEach((item, index) => {
         if (!item.width) {
-          item.width = parseWidth(
-            (bodyWidth - widthSum - indexWidth) / (tables.length - num)
-          )
+          this.$set(header[index], 'width', width)
         }
-        return item
       })
-      this.store.tableData = this.tableBodyData
     }
   }
 }
