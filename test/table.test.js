@@ -91,7 +91,7 @@ describe('options prop', () => {
   })
 
   it('index', async() => {
-    await wrapper.setProps({options: {isIndex: true}})
+    await wrapper.setProps({options: {index: true}})
     expect(toArray(wrapper.vm.$el.querySelectorAll('.el-table__body-wrapper tbody tr td:first-child'))
       .map(node => node.textContent)).toEqual(['1', '2', '3', '4', '5', '6', '7', '8', '9'])
   })
