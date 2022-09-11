@@ -305,7 +305,7 @@ export default {
                   <tr onClick={() => lineClick(bodyColumn)}>
                     {index && (
                       <td class={['el-table__cell', 'is-center']}>
-                        <div class={['cell']}>{bodyIndex + 1}</div>
+                        <div class={['cell']}>{bodyColumn.$index}</div>
                       </td>
                     )}
                     {tableHeader.map(headerColumn => {

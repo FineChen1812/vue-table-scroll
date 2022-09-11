@@ -907,7 +907,7 @@ var TableBody = {
         "class": ["el-table__cell", "is-center"]
       }, [h("div", {
         "class": ["cell"]
-      }, [bodyIndex + 1])]), tableHeader.map((headerColumn) => {
+      }, [bodyColumn.$index])]), tableHeader.map((headerColumn) => {
         return !headerColumn.hidden && h("td", {
           "class": ["el-table__cell", "is-center"],
           "on": {
@@ -1123,9 +1123,15 @@ const __vue2_script = {
     tableData: {
       immediate: true,
       handler(newVal, oldVal) {
+        console.log(this.options, "options");
         if ((newVal == null ? void 0 : newVal.length) > 0 && oldVal !== newVal) {
           this.isEmpty = false;
           this.updateKey++;
+          if (this.options.index) {
+            newVal.forEach((item, index2) => {
+              item.$index = index2 + 1;
+            });
+          }
           this.tableBodyData = newVal;
         } else {
           this.isEmpty = true;

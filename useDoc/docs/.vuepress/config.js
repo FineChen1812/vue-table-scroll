@@ -31,14 +31,14 @@ module.exports = {
         },
         algolia: {},
         nav: [
-          { text: "Home", link: "/" },
-          { text: "Guide", link: "/guide/" },
+          { text: "主页", link: "/" },
+          { text: "指南", link: "/guide/" },
           { text: "Changelog", link: "/changelog/" },
         ],
         sidebar: {
           "/guide/": [
             {
-              title: "Guide",
+              title: "指南",
               collapsable: false,
               children: [
                 "",
@@ -47,7 +47,7 @@ module.exports = {
               ],
             },
             {
-              title: "Examples",
+              title: "示例",
               collapsable: false,
               children: [
                 "basic",
@@ -58,7 +58,7 @@ module.exports = {
                 "singleStepMove",
                 "hidden",
                 "lineClick",
-                "hoverStop"
+                "hoverStop",
               ],
             },
           ],
@@ -98,7 +98,7 @@ module.exports = {
                 "singleStepMove",
                 "hidden",
                 "lineClick",
-                "hoverStop"
+                "hoverStop",
               ],
             },
           ],

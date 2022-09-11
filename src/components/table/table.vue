@@ -108,9 +108,15 @@ export default {
     tableData: {
       immediate: true,
       handler(newVal, oldVal) {
+        console.log(this.options, 'options')
         if (newVal?.length > 0 && oldVal !== newVal) {
           this.isEmpty = false
           this.updateKey++
+          if (this.options.index) {
+            newVal.forEach((item, index) => {
+              item.$index = index + 1
+            })
+          }
           this.tableBodyData = newVal
         } else {
           this.isEmpty = true

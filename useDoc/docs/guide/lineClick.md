@@ -68,7 +68,7 @@ export default {
   },
   methods: {
     lickClick(data){
-      console.log(data)
+      alert(data)
     }
   }
 }

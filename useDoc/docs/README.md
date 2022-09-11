@@ -1,6 +1,7 @@
 # 指南
 ## 功能预览
 ![总览](../docs/static/img.jpg)
+![示例](../docs/static/example.gif)
 ## 安装
 ```
 npm install vue-table-scroll

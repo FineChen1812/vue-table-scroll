@@ -10,7 +10,7 @@
 - type: `Boolean`
 - 默认值: `true`
 
-说明: 数据超长隐藏并提示
+说明: 数据超长隐藏并鼠标进入单元格悬浮提示
 
 ## bodyHeight
 - type: `Number`
