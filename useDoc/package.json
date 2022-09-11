@@ -11,7 +11,7 @@
     "docs:deploy": "sudo ./deploy.sh"
   },
   "dependencies": {
-    "vue-table-scroll": "^1.2.8"
+    "vue-table-scroll": "^1.2.10"
   },
   "devDependencies": {
     "@vuepress/plugin-back-to-top": "^1.6.0",
